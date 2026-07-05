@@ -1,0 +1,438 @@
+{
+  "version": 1,
+  "tolerance": 0.01,
+  "pieces": {
+    "straight-16": {
+      "ports": [
+        {
+          "id": "a",
+          "localPosition": {
+            "x": 0,
+            "y": 0
+          },
+          "facing": 8,
+          "connector": "rail"
+        },
+        {
+          "id": "b",
+          "localPosition": {
+            "x": 16,
+            "y": 0
+          },
+          "facing": 0,
+          "connector": "rail"
+        }
+      ],
+      "transforms": {
+        "0": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 8,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 16,
+                "y": 0
+              },
+              "facing": 0,
+              "connector": "rail"
+            }
+          ]
+        },
+        "1": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 9,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 14.782072520180588,
+                "y": -6.1229349178414365
+              },
+              "facing": 1,
+              "connector": "rail"
+            }
+          ]
+        },
+        "4": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 12,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 9.797174393178826e-16,
+                "y": -16
+              },
+              "facing": 4,
+              "connector": "rail"
+            }
+          ]
+        }
+      }
+    },
+    "curve-r40": {
+      "ports": [
+        {
+          "id": "a",
+          "localPosition": {
+            "x": 0,
+            "y": 0
+          },
+          "facing": 8,
+          "connector": "rail"
+        },
+        {
+          "id": "b",
+          "localPosition": {
+            "x": 15.307337294603592,
+            "y": 3.0448186995485287
+          },
+          "facing": 1,
+          "connector": "rail"
+        }
+      ],
+      "transforms": {
+        "0": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 8,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 15.307337294603592,
+                "y": 3.0448186995485287
+              },
+              "facing": 1,
+              "connector": "rail"
+            }
+          ]
+        },
+        "1": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 9,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 15.307337294603592,
+                "y": -3.0448186995485313
+              },
+              "facing": 2,
+              "connector": "rail"
+            }
+          ]
+        },
+        "4": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 12,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 3.0448186995485296,
+                "y": -15.307337294603592
+              },
+              "facing": 5,
+              "connector": "rail"
+            }
+          ]
+        }
+      }
+    },
+    "switch-left": {
+      "ports": [
+        {
+          "id": "a",
+          "localPosition": {
+            "x": 0,
+            "y": 0
+          },
+          "facing": 8,
+          "connector": "rail"
+        },
+        {
+          "id": "b",
+          "localPosition": {
+            "x": 32,
+            "y": 0
+          },
+          "facing": 0,
+          "connector": "rail"
+        },
+        {
+          "id": "c",
+          "localPosition": {
+            "x": 32.6926,
+            "y": -12.95515
+          },
+          "facing": 15,
+          "connector": "rail"
+        }
+      ],
+      "transforms": {
+        "0": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 8,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 32,
+                "y": 0
+              },
+              "facing": 0,
+              "connector": "rail"
+            },
+            {
+              "id": "c",
+              "position": {
+                "x": 32.6926,
+                "y": -12.95515
+              },
+              "facing": 15,
+              "connector": "rail"
+            }
+          ]
+        },
+        "1": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 9,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 29.564145040361176,
+                "y": -12.245869835682873
+              },
+              "facing": 1,
+              "connector": "rail"
+            },
+            {
+              "id": "c",
+              "position": {
+                "x": 25.2463027357739,
+                "y": -24.47991430655253
+              },
+              "facing": 0,
+              "connector": "rail"
+            }
+          ]
+        },
+        "4": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 12,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 1.959434878635765e-15,
+                "y": -32
+              },
+              "facing": 4,
+              "connector": "rail"
+            },
+            {
+              "id": "c",
+              "position": {
+                "x": -12.955149999999998,
+                "y": -32.6926
+              },
+              "facing": 3,
+              "connector": "rail"
+            }
+          ]
+        }
+      }
+    },
+    "switch-right": {
+      "ports": [
+        {
+          "id": "a",
+          "localPosition": {
+            "x": 0,
+            "y": 0
+          },
+          "facing": 8,
+          "connector": "rail"
+        },
+        {
+          "id": "b",
+          "localPosition": {
+            "x": 32,
+            "y": 0
+          },
+          "facing": 0,
+          "connector": "rail"
+        },
+        {
+          "id": "c",
+          "localPosition": {
+            "x": 32.6926,
+            "y": 12.95515
+          },
+          "facing": 1,
+          "connector": "rail"
+        }
+      ],
+      "transforms": {
+        "0": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 8,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 32,
+                "y": 0
+              },
+              "facing": 0,
+              "connector": "rail"
+            },
+            {
+              "id": "c",
+              "position": {
+                "x": 32.6926,
+                "y": 12.95515
+              },
+              "facing": 1,
+              "connector": "rail"
+            }
+          ]
+        },
+        "1": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 9,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 29.564145040361176,
+                "y": -12.245869835682873
+              },
+              "facing": 1,
+              "connector": "rail"
+            },
+            {
+              "id": "c",
+              "position": {
+                "x": 35.16174527338308,
+                "y": -0.5419184553253373
+              },
+              "facing": 2,
+              "connector": "rail"
+            }
+          ]
+        },
+        "4": {
+          "ports": [
+            {
+              "id": "a",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "facing": 12,
+              "connector": "rail"
+            },
+            {
+              "id": "b",
+              "position": {
+                "x": 1.959434878635765e-15,
+                "y": -32
+              },
+              "facing": 4,
+              "connector": "rail"
+            },
+            {
+              "id": "c",
+              "position": {
+                "x": 12.955150000000001,
+                "y": -32.6926
+              },
+              "facing": 5,
+              "connector": "rail"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

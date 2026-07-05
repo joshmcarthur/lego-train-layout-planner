@@ -4,7 +4,10 @@ import { PACKAGE_VERSION as connectionEngineVersion } from '@track-layout/connec
 import { PACKAGE_VERSION as inventoryVersion } from '@track-layout/inventory';
 import { PACKAGE_VERSION as layoutGeneratorVersion } from '@track-layout/layout-generator';
 import { PACKAGE_VERSION as persistenceVersion } from '@track-layout/persistence';
-import { PACKAGE_VERSION as pieceCatalogueVersion } from '@track-layout/piece-catalogue';
+import {
+  CATALOGUE_V1,
+  PACKAGE_VERSION as pieceCatalogueVersion,
+} from '@track-layout/piece-catalogue';
 
 describe('toolchain smoke', () => {
   it('runs vitest', () => {
@@ -12,7 +15,8 @@ describe('toolchain smoke', () => {
   });
 
   it('imports domain package barrels', () => {
-    expect(pieceCatalogueVersion).toBe('0.0.0');
+    expect(pieceCatalogueVersion).toBe('0.1.0');
+    expect(CATALOGUE_V1.version).toBe(1);
     expect(connectionEngineVersion).toBe('0.0.0');
     expect(layoutGeneratorVersion).toBe('0.0.0');
     expect(inventoryVersion).toBe('0.0.0');
