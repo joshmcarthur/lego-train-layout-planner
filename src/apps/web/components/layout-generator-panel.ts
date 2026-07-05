@@ -7,6 +7,7 @@ import {
   loadInventory,
   saveAutosave,
 } from '@track-layout/persistence';
+import LayoutSearchWorker from '../../../packages/layout-generator/worker.ts?worker';
 import {
   defaultGeneratorOptions,
   type WorkerDoneMessage,
@@ -181,8 +182,7 @@ export class LayoutGeneratorPanel extends LitElement {
     this.exhausted = false;
     this.selectedIndex = null;
 
-    const workerUrl = new URL('../../../packages/layout-generator/worker.ts', import.meta.url);
-    this.worker = new Worker(workerUrl, { type: 'module' });
+    this.worker = new LayoutSearchWorker();
 
     this.worker.onmessage = (event: MessageEvent<WorkerProgressMessage | WorkerDoneMessage>) => {
       const data = event.data;
