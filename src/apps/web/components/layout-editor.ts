@@ -67,6 +67,22 @@ export class LayoutEditor extends LitElement {
       align-items: flex-start;
     }
 
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 0.375rem;
+      background: #fff;
+      color: inherit;
+      text-decoration: none;
+      font: inherit;
+    }
+
+    .header-link:hover {
+      background: #f5f5f5;
+    }
+
     h1 {
       margin: 0;
     }
@@ -325,6 +341,7 @@ export class LayoutEditor extends LitElement {
         <div class="header">
           <h1>Editor</h1>
           <div class="header-actions">
+            <a class="header-link" href="${import.meta.env.BASE_URL}generate/">Generate layouts</a>
             <save-load-menu @layout-saved=${() => this.syncFromStore()}></save-load-menu>
             <share-link-button></share-link-button>
             <layout-library @layout-opened=${() => this.syncFromStore()}></layout-library>

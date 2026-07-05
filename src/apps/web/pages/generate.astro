@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { GeneratorGate } from '../components/generator-gate';
+---
+
+<BaseLayout title="Generate — Lego Train Layout Planner">
+  <main class="generate-layout">
+    <GeneratorGate client:only="lit" />
+  </main>
+</BaseLayout>
+
+<style>
+  .generate-layout {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+  }
+</style>

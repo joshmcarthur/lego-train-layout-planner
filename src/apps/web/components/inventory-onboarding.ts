@@ -36,6 +36,14 @@ export class InventoryOnboarding extends LitElement {
       border: 1px solid #ffb74d;
       color: #5d4037;
     }
+
+    .secondary-actions {
+      margin-top: 1rem;
+    }
+
+    .secondary-actions a {
+      color: #1565c0;
+    }
   `;
 
   override connectedCallback(): void {
@@ -76,6 +84,9 @@ export class InventoryOnboarding extends LitElement {
         @inventory-change=${this.handleChange}
         @inventory-submit=${this.handleSubmit}
       ></inventory-form>
+      <p class="secondary-actions">
+        Or <a href="${import.meta.env.BASE_URL}generate/">generate layouts</a> from your inventory.
+      </p>
     `;
   }
 }
