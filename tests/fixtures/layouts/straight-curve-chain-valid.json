@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "catalogueVersion": 1,
+  "description": "Straight + curve at 22.5° heading",
+  "placements": [
+    {
+      "instanceId": "sc1",
+      "pieceId": "straight-16",
+      "x": 0,
+      "y": 0,
+      "rotation": 0
+    },
+    {
+      "instanceId": "sc2",
+      "pieceId": "curve-r40",
+      "x": 16,
+      "y": 0,
+      "rotation": 0
+    }
+  ],
+  "expect": {
+    "valid": true,
+    "issues": [
+      {
+        "severity": "info",
+        "code": "OPEN_END"
+      }
+    ]
+  }
+}

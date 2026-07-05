@@ -122,8 +122,15 @@ export function buildRouteGraph(layout: Layout, catalogue: PieceCatalogue): Rout
   const nodeIds = [...nodes.keys()];
   const nodeIndex = new Map(nodeIds.map((id, index) => [id, index]));
   const uf = new UnionFind(nodeIds.length);
+  const unionedEdges = new Set<string>();
 
   for (const edge of edges) {
+    const edgeKey = edge.from < edge.to ? `${edge.from}|${edge.to}` : `${edge.to}|${edge.from}`;
+    if (unionedEdges.has(edgeKey)) {
+      continue;
+    }
+    unionedEdges.add(edgeKey);
+
     const fromIndex = nodeIndex.get(edge.from);
     const toIndex = nodeIndex.get(edge.to);
     if (fromIndex === undefined || toIndex === undefined) {

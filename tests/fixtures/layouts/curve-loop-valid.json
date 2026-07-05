@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "catalogueVersion": 1,
+  "description": "Circle of sixteen 22.5° curves",
+  "placements": [
+    {
+      "instanceId": "curve-1",
+      "pieceId": "curve-r40",
+      "x": 0,
+      "y": 0,
+      "rotation": 0
+    },
+    {
+      "instanceId": "curve-2",
+      "pieceId": "curve-r40",
+      "x": 15.307337294603592,
+      "y": 3.0448186995485287,
+      "rotation": 1
+    },
+    {
+      "instanceId": "curve-3",
+      "pieceId": "curve-r40",
+      "x": 30.614674589207183,
+      "y": -2.6645352591003757e-15,
+      "rotation": 2
+    },
+    {
+      "instanceId": "curve-4",
+      "pieceId": "curve-r40",
+      "x": 43.591608542065494,
+      "y": -8.670910052989573,
+      "rotation": 3
+    },
+    {
+      "instanceId": "curve-5",
+      "pieceId": "curve-r40",
+      "x": 52.26251859505506,
+      "y": -21.647844005847883,
+      "rotation": 4
+    },
+    {
+      "instanceId": "curve-6",
+      "pieceId": "curve-r40",
+      "x": 55.30733729460359,
+      "y": -36.95518130045147,
+      "rotation": 5
+    },
+    {
+      "instanceId": "curve-7",
+      "pieceId": "curve-r40",
+      "x": 52.26251859505506,
+      "y": -52.26251859505506,
+      "rotation": 6
+    },
+    {
+      "instanceId": "curve-8",
+      "pieceId": "curve-r40",
+      "x": 43.591608542065494,
+      "y": -65.23945254791337,
+      "rotation": 7
+    },
+    {
+      "instanceId": "curve-9",
+      "pieceId": "curve-r40",
+      "x": 30.614674589207183,
+      "y": -73.91036260090294,
+      "rotation": 8
+    },
+    {
+      "instanceId": "curve-10",
+      "pieceId": "curve-r40",
+      "x": 15.307337294603592,
+      "y": -76.95518130045147,
+      "rotation": 9
+    },
+    {
+      "instanceId": "curve-11",
+      "pieceId": "curve-r40",
+      "x": -1.7763568394002505e-15,
+      "y": -73.91036260090294,
+      "rotation": 10
+    },
+    {
+      "instanceId": "curve-12",
+      "pieceId": "curve-r40",
+      "x": -12.976933952858316,
+      "y": -65.23945254791337,
+      "rotation": 11
+    },
+    {
+      "instanceId": "curve-13",
+      "pieceId": "curve-r40",
+      "x": -21.64784400584788,
+      "y": -52.262518595055056,
+      "rotation": 12
+    },
+    {
+      "instanceId": "curve-14",
+      "pieceId": "curve-r40",
+      "x": -24.692662705396412,
+      "y": -36.955181300451464,
+      "rotation": 13
+    },
+    {
+      "instanceId": "curve-15",
+      "pieceId": "curve-r40",
+      "x": -21.647844005847876,
+      "y": -21.647844005847872,
+      "rotation": 14
+    },
+    {
+      "instanceId": "curve-16",
+      "pieceId": "curve-r40",
+      "x": -12.976933952858309,
+      "y": -8.67091005298956,
+      "rotation": 15
+    }
+  ],
+  "expect": {
+    "valid": true,
+    "issues": [],
+    "routeGraph": {
+      "closedComponentCount": 1,
+      "openEndCount": 0
+    }
+  }
+}

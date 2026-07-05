@@ -7,7 +7,11 @@ function overlapKey(a: string, b: string): string {
   return a < b ? `${a}|${b}` : `${b}|${a}`;
 }
 
-export function detectOverlaps(layout: Layout, catalogue: PieceCatalogue): ValidationIssue[] {
+export function detectOverlaps(
+  layout: Layout,
+  catalogue: PieceCatalogue,
+  connectedInstancePairs: ReadonlySet<string> = new Set(),
+): ValidationIssue[] {
   const cellOwners = new Map<string, string>();
   const reportedPairs = new Set<string>();
   const issues: ValidationIssue[] = [];
@@ -27,7 +31,7 @@ export function detectOverlaps(layout: Layout, catalogue: PieceCatalogue): Valid
       }
 
       const pairKey = overlapKey(existingOwner, placement.instanceId);
-      if (reportedPairs.has(pairKey)) {
+      if (connectedInstancePairs.has(pairKey) || reportedPairs.has(pairKey)) {
         continue;
       }
 

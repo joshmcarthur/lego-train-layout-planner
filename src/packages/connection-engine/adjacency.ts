@@ -55,10 +55,11 @@ function buildSpatialIndex(ports: WorldPort[]): Map<string, WorldPort[]> {
 function neighbourBucketKeys(x: number, y: number): string[] {
   const bx = Math.round(x / POSITION_TOLERANCE);
   const by = Math.round(y / POSITION_TOLERANCE);
+  const radiusBuckets = Math.ceil(NEAR_MISS_RADIUS / POSITION_TOLERANCE);
   const keys: string[] = [];
 
-  for (let dx = -1; dx <= 1; dx++) {
-    for (let dy = -1; dy <= 1; dy++) {
+  for (let dx = -radiusBuckets; dx <= radiusBuckets; dx++) {
+    for (let dy = -radiusBuckets; dy <= radiusBuckets; dy++) {
       keys.push(`${bx + dx},${by + dy}`);
     }
   }
@@ -110,12 +111,24 @@ export function classifyPorts(layout: Layout, catalogue: PieceCatalogue): Adjace
 
   function reportIssue(issue: ValidationIssue): void {
     let key: string;
-    if (issue.code === 'OVERLAP') {
-      key = `OVERLAP:${issue.a}:${issue.b}`;
-    } else if (issue.code === 'OPEN_END') {
-      key = `OPEN_END:${issue.instanceId}:${issue.portId}`;
-    } else {
-      key = `${issue.code}:${issue.instanceId}:${issue.portId}`;
+    switch (issue.code) {
+      case 'OVERLAP':
+        key = `OVERLAP:${issue.a}:${issue.b}`;
+        break;
+      case 'OPEN_END':
+        key = `OPEN_END:${issue.instanceId}:${issue.portId}`;
+        break;
+      case 'UNKNOWN_PIECE':
+        key = `UNKNOWN_PIECE:${issue.instanceId}:${issue.pieceId}`;
+        break;
+      case 'PORT_MISMATCH':
+      case 'PORT_NEAR_MISS':
+        key = `${issue.code}:${issue.instanceId}:${issue.portId}`;
+        break;
+      default: {
+        const exhaustive: never = issue;
+        throw new Error(`Unhandled issue: ${JSON.stringify(exhaustive)}`);
+      }
     }
 
     if (!reportedIssues.has(key)) {
@@ -136,13 +149,9 @@ export function classifyPorts(layout: Layout, catalogue: PieceCatalogue): Adjace
       continue;
     }
 
-    let hasConnection = false;
-    let hasMismatch = false;
-    let hasNearMiss = false;
-
-    for (const other of candidates) {
-      if (portsConnect(port, other)) {
-        hasConnection = true;
+    const connecting = candidates.filter((other) => portsConnect(port, other));
+    if (connecting.length > 0) {
+      for (const other of connecting) {
         const from = portNodeId(port.instanceId, port.portId);
         const to = portNodeId(other.instanceId, other.portId);
         const edgeKey = connectionEdgeKey(from, to);
@@ -150,9 +159,14 @@ export function classifyPorts(layout: Layout, catalogue: PieceCatalogue): Adjace
           seenConnectionEdges.add(edgeKey);
           connectionEdges.push({ from, to });
         }
-        continue;
       }
+      continue;
+    }
 
+    let hasMismatch = false;
+    let hasNearMiss = false;
+
+    for (const other of candidates) {
       if (pointsCoincide(port.position, other.position)) {
         hasMismatch = true;
         reportIssue({
@@ -185,7 +199,7 @@ export function classifyPorts(layout: Layout, catalogue: PieceCatalogue): Adjace
       });
     }
 
-    if (!hasConnection && !hasMismatch && !hasNearMiss) {
+    if (!hasMismatch && !hasNearMiss) {
       reportIssue({
         severity: 'info',
         code: 'OPEN_END',

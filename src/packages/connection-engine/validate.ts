@@ -4,6 +4,20 @@ import { classifyPorts } from './adjacency.ts';
 import { detectOverlaps } from './collision.ts';
 import type { Layout, Placement, ValidationIssue, ValidationResult } from './types.ts';
 
+function instancePairKey(a: string, b: string): string {
+  return a < b ? `${a}|${b}` : `${b}|${a}`;
+}
+
+function connectedInstancePairs(connectionEdges: Array<{ from: string; to: string }>): Set<string> {
+  const pairs = new Set<string>();
+  for (const edge of connectionEdges) {
+    const [fromInstanceId] = edge.from.split(':');
+    const [toInstanceId] = edge.to.split(':');
+    pairs.add(instancePairKey(fromInstanceId, toInstanceId));
+  }
+  return pairs;
+}
+
 function severityRank(severity: ValidationIssue['severity']): number {
   return severity === 'error' ? 0 : 1;
 }
@@ -63,8 +77,12 @@ export function validateLayout(layout: Layout, catalogue: PieceCatalogue): Valid
     return { valid: false, issues };
   }
 
-  const overlapIssues = detectOverlaps(layout, catalogue);
-  const { issues: adjacencyIssues } = classifyPorts(layout, catalogue);
+  const { issues: adjacencyIssues, connectionEdges } = classifyPorts(layout, catalogue);
+  const overlapIssues = detectOverlaps(
+    layout,
+    catalogue,
+    connectedInstancePairs(connectionEdges),
+  );
   const issues = [...overlapIssues, ...adjacencyIssues].sort(compareIssues);
   const valid = issues.every((issue) => issue.severity !== 'error');
 

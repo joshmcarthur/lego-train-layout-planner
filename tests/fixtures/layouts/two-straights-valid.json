@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "catalogueVersion": 1,
+  "description": "Colinear straight join",
+  "placements": [
+    {
+      "instanceId": "s1",
+      "pieceId": "straight-16",
+      "x": 0,
+      "y": 0,
+      "rotation": 0
+    },
+    {
+      "instanceId": "s2",
+      "pieceId": "straight-16",
+      "x": 16,
+      "y": 0,
+      "rotation": 0
+    }
+  ],
+  "expect": {
+    "valid": true,
+    "issues": [
+      {
+        "severity": "info",
+        "code": "OPEN_END"
+      },
+      {
+        "severity": "info",
+        "code": "OPEN_END"
+      }
+    ]
+  }
+}

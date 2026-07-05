@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "catalogueVersion": 1,
+  "description": "Footprint collision",
+  "placements": [
+    {
+      "instanceId": "o1",
+      "pieceId": "straight-16",
+      "x": 0,
+      "y": 0,
+      "rotation": 0
+    },
+    {
+      "instanceId": "o2",
+      "pieceId": "straight-16",
+      "x": 0,
+      "y": 0,
+      "rotation": 0
+    }
+  ],
+  "expect": {
+    "valid": false,
+    "issues": [
+      {
+        "severity": "error",
+        "code": "OVERLAP"
+      }
+    ]
+  }
+}

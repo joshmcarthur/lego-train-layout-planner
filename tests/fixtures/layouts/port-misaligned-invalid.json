@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "catalogueVersion": 1,
+  "description": "Coincident ports, facings not opposite",
+  "placements": [
+    {
+      "instanceId": "m1",
+      "pieceId": "straight-16",
+      "x": 0,
+      "y": 0,
+      "rotation": 0
+    },
+    {
+      "instanceId": "m2",
+      "pieceId": "straight-16",
+      "x": 0,
+      "y": 0,
+      "rotation": 0
+    }
+  ],
+  "expect": {
+    "valid": false,
+    "issues": [
+      {
+        "severity": "error",
+        "code": "PORT_MISMATCH"
+      }
+    ]
+  }
+}
