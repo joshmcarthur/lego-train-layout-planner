@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "catalogueVersion": 1,
+  "inventory": {
+    "schemaVersion": 1,
+    "counts": {
+      "straight-16": 4,
+      "curve-r40": 0,
+      "switch-left": 0,
+      "switch-right": 0
+    },
+    "updatedAt": "2026-07-05T00:00:00.000Z"
+  },
+  "layout": {
+    "schemaVersion": 1,
+    "catalogueVersion": 1,
+    "placements": [
+      {
+        "instanceId": "s1",
+        "pieceId": "straight-16",
+        "x": 0,
+        "y": 0,
+        "rotation": 0
+      },
+      {
+        "instanceId": "s2",
+        "pieceId": "straight-16",
+        "x": 16,
+        "y": 0,
+        "rotation": 0
+      }
+    ]
+  },
+  "meta": {
+    "name": "two-straights-valid",
+    "createdAt": "2026-07-05T00:00:00.000Z"
+  }
+}
