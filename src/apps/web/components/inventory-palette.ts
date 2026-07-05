@@ -7,12 +7,19 @@ export class InventoryPalette extends LitElement {
   @property({ attribute: false })
   remaining: Record<string, number> = {};
 
+  @property({ type: Boolean })
+  disabled = false;
+
   @property({ type: String })
   selectedPieceId: string | null = null;
 
   static override styles = css`
     :host {
       display: block;
+      padding: var(--space-2, 1rem);
+      border-radius: 0.5rem;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
     .palette {
@@ -92,19 +99,20 @@ export class InventoryPalette extends LitElement {
     const pieces = CATALOGUE_V1.all();
 
     return html`
-      <h2>Pieces</h2>
-      <ul class="palette">
+      <h2 id="palette-label">Pieces</h2>
+      <ul class="palette" role="listbox" aria-labelledby="palette-label">
         ${pieces.map((piece) => {
           const count = this.remaining[piece.inventoryKey] ?? 0;
           const selected = this.selectedPieceId === piece.id;
           return html`
-            <li>
+            <li role="presentation">
               <button
                 type="button"
                 class="palette-item ${selected ? 'selected' : ''}"
                 data-testid="palette-${piece.id}"
-                ?disabled=${count === 0}
-                aria-pressed=${selected}
+                role="option"
+                aria-selected=${selected}
+                ?disabled=${count === 0 || this.disabled}
                 @click=${() => this.handleSelect(piece.id)}
               >
                 <span>${piece.name}</span>

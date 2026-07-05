@@ -6,11 +6,12 @@ import { customElement, property, state } from 'lit/decorators.js';
 import {
   getState,
   hasLayoutInProgress,
-  initAppStoreFromInventory,
+  isAppStoreInitialized,
   setInventory,
   subscribe,
 } from '../state/app-store.ts';
 import { loadInventory } from '@track-layout/persistence';
+import { focusFirstElement, trapFocus } from '../utils/focus-trap.ts';
 import './inventory-form.ts';
 
 @customElement('inventory-settings')
@@ -28,6 +29,7 @@ export class InventorySettings extends LitElement {
   private saveWarning = '';
 
   private unsubscribe: (() => void) | null = null;
+  private triggerElement: HTMLElement | null = null;
 
   static override styles = css`
     :host {
@@ -89,7 +91,6 @@ export class InventorySettings extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    initAppStoreFromInventory(loadInventory);
     this.syncFromStore();
     this.unsubscribe = subscribe(() => {
       this.syncFromStore();
@@ -103,14 +104,20 @@ export class InventorySettings extends LitElement {
   }
 
   private syncFromStore(): void {
-    const { inventory } = getState();
-    if (inventory) {
-      this.counts = { ...inventory.counts };
+    const stored = loadInventory();
+    if (stored) {
+      this.counts = { ...stored.counts };
+    } else {
+      const { inventory } = getState();
+      if (inventory) {
+        this.counts = { ...inventory.counts };
+      }
     }
-    this.showWarning = hasLayoutInProgress();
+    this.showWarning = isAppStoreInitialized() && hasLayoutInProgress();
   }
 
   private openDialog(): void {
+    this.triggerElement = this.renderRoot.querySelector('.trigger');
     this.open = true;
     this.saveWarning = '';
     this.syncFromStore();
@@ -118,7 +125,15 @@ export class InventorySettings extends LitElement {
 
   private closeDialog(): void {
     this.open = false;
+    this.triggerElement?.focus();
   }
+
+  private handleDialogKeyDown = (event: KeyboardEvent): void => {
+    const dialog = this.renderRoot.querySelector('dialog');
+    if (dialog) {
+      trapFocus(dialog, event);
+    }
+  };
 
   private handleDialogToggle(event: Event): void {
     const dialog = event.target as HTMLDialogElement;
@@ -149,6 +164,7 @@ export class InventorySettings extends LitElement {
       }
       if (this.open && !dialog.open) {
         dialog.showModal();
+        focusFirstElement(dialog);
       } else if (!this.open && dialog.open) {
         dialog.close();
       }
@@ -160,7 +176,7 @@ export class InventorySettings extends LitElement {
       <button class="trigger" type="button" @click=${this.openDialog}>
         Inventory settings
       </button>
-      <dialog @toggle=${this.handleDialogToggle}>
+      <dialog @toggle=${this.handleDialogToggle} @keydown=${this.handleDialogKeyDown}>
         <div class="dialog-header">
           <h2>Edit inventory</h2>
           <button type="button" @click=${this.closeDialog}>Close</button>

@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:a11y": "playwright test tests/e2e/a11y.spec.ts",
     "lint": "eslint .",
     "typecheck": "astro check && tsc --noEmit -p tsconfig.packages.json"
   },
