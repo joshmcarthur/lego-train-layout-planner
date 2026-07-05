@@ -17,7 +17,6 @@ import './editor-toolbar.ts';
 import './fork-banner.ts';
 import './import-export-menu.ts';
 import './inventory-palette.ts';
-import './inventory-settings.ts';
 import './layout-library.ts';
 import './save-load-menu.ts';
 import './share-link-button.ts';
@@ -56,31 +55,15 @@ export class LayoutEditor extends LitElement {
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: var(--space-2, 1rem);
+      margin-bottom: var(--space-2, 1rem);
     }
 
     .header-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: var(--space-1, 0.5rem);
       align-items: flex-start;
-    }
-
-    .header-link {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.4rem 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 0.375rem;
-      background: #fff;
-      color: inherit;
-      text-decoration: none;
-      font: inherit;
-    }
-
-    .header-link:hover {
-      background: #f5f5f5;
     }
 
     h1 {
@@ -341,12 +324,10 @@ export class LayoutEditor extends LitElement {
         <div class="header">
           <h1>Editor</h1>
           <div class="header-actions">
-            <a class="header-link" href="${import.meta.env.BASE_URL}generate/">Generate layouts</a>
             <save-load-menu @layout-saved=${() => this.syncFromStore()}></save-load-menu>
             <share-link-button></share-link-button>
             <layout-library @layout-opened=${() => this.syncFromStore()}></layout-library>
             <import-export-menu @layout-imported=${() => this.syncFromStore()}></import-export-menu>
-            <inventory-settings></inventory-settings>
           </div>
         </div>
 

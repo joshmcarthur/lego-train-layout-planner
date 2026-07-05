@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { GeneratorGate } from '../components/generator-gate';
+import { ShareRedirectGate } from '../components/share-redirect-gate';
 ---
 
 <BaseLayout title="Generate — Lego Train Layout Planner">
+  <ShareRedirectGate client:only="lit" />
   <main class="generate-layout">
     <GeneratorGate client:only="lit" />
   </main>
@@ -13,6 +15,6 @@ import { GeneratorGate } from '../components/generator-gate';
   .generate-layout {
     max-width: 64rem;
     margin: 0 auto;
-    padding: 1.5rem 1rem 3rem;
+    padding: 0 1.5rem 3rem;
   }
 </style>

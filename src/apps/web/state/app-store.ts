@@ -182,7 +182,11 @@ export function hasLayoutInProgress(): boolean {
   return state.layout.placements.length > 0;
 }
 
-export function resetAppStoreForTests(): void {
+export function isAppStoreInitialized(): boolean {
+  return initialized;
+}
+
+export function resetAppStore(): void {
   if (autosaveTimer) {
     clearTimeout(autosaveTimer);
     autosaveTimer = null;
@@ -196,5 +200,9 @@ export function resetAppStoreForTests(): void {
     forkMode: false,
     catalogueMismatch: false,
   };
+}
+
+export function resetAppStoreForTests(): void {
+  resetAppStore();
   listeners.clear();
 }

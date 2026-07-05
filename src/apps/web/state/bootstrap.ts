@@ -4,9 +4,12 @@ import { CATALOGUE_VERSION } from '@track-layout/piece-catalogue';
 import {
   createSerializedAppState,
   decodeShareUrl,
+  extractSharePayload,
   forkLayout,
+  hasAutosaveSession,
   loadAutosave,
   loadInventory,
+  type SerializedAppState,
 } from '@track-layout/persistence';
 
 export interface BootstrapResult {
@@ -18,12 +21,53 @@ export interface BootstrapResult {
   catalogueMismatch: boolean;
 }
 
+export type EntryRoute =
+  | { kind: 'share'; href: string }
+  | { kind: 'resume'; autosave: SerializedAppState }
+  | { kind: 'onboarding' }
+  | { kind: 'editor' };
+
 function emptyLayout(): Layout {
   return {
     schemaVersion: LAYOUT_SCHEMA_VERSION,
     catalogueVersion: CATALOGUE_VERSION,
     placements: [],
   };
+}
+
+function editorBaseHref(origin = window.location.origin): string {
+  const base = import.meta.env.BASE_URL;
+  return `${origin}${base}editor/`;
+}
+
+export function resolveEntryRoute(href = window.location.href): EntryRoute {
+  if (extractSharePayload(href)) {
+    const url = new URL(href);
+    return { kind: 'share', href: `${editorBaseHref(url.origin)}${url.hash}` };
+  }
+
+  if (hasAutosaveSession()) {
+    const autosave = loadAutosave();
+    if (autosave) {
+      return { kind: 'resume', autosave };
+    }
+  }
+
+  if (!loadInventory()) {
+    return { kind: 'onboarding' };
+  }
+
+  return { kind: 'editor' };
+}
+
+export function redirectIfShareUrl(href = window.location.href): boolean {
+  if (!extractSharePayload(href)) {
+    return false;
+  }
+
+  const url = new URL(href);
+  window.location.href = `${editorBaseHref(url.origin)}${url.hash}`;
+  return true;
 }
 
 function stripShareParam(): void {

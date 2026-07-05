@@ -2,7 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 import { bootstrapEditor } from '../state/bootstrap.ts';
-import { getState, initAppStore } from '../state/app-store.ts';
+import { getState, initAppStore, resetAppStore } from '../state/app-store.ts';
 import './layout-editor.ts';
 
 @customElement('editor-gate')
@@ -17,6 +17,7 @@ export class EditorGate extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    resetAppStore();
     initAppStore(bootstrapEditor());
 
     const { inventory } = getState();
