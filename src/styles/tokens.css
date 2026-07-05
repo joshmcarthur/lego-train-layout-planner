@@ -30,6 +30,11 @@ main {
   padding: 2rem 1.5rem;
 }
 
+main.editor-layout {
+  max-width: none;
+  padding: 1.5rem;
+}
+
 a {
   color: #1565c0;
 }
