@@ -1,16 +1,14 @@
 import type { Layout, Placement, ValidationIssue } from '@track-layout/connection-engine';
 import { getWorldPorts, validateLayout } from '@track-layout/connection-engine';
 import { CATALOGUE_V1 } from '@track-layout/piece-catalogue';
-import { LitElement, css, html, nothing } from 'lit';
+import { LitElement, css, nothing, svg } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import type { Viewport } from '../state/editor-reducer.ts';
 import { screenToStud } from '../state/snap-placement.ts';
 import { issueMessage } from '../state/validation-messages.ts';
-import './editor-grid.ts';
-import './track-piece-svg.ts';
-import './validation-overlay.ts';
-import type { OpenEndMarker } from './validation-overlay.ts';
+import { renderGrid, renderValidationOverlay } from '../rendering/render-grid.ts';
+import { renderTrackPiece } from '../rendering/render-track-piece.ts';
 
 @customElement('editor-canvas')
 export class EditorCanvas extends LitElement {
@@ -75,18 +73,94 @@ export class EditorCanvas extends LitElement {
       touch-action: none;
     }
 
-    .hit-area {
-      fill: transparent;
+    .grid-minor {
+      stroke: var(--color-grid, #e8e8e8);
+      stroke-width: 0.05;
+    }
+
+    .grid-major {
+      stroke: #d0d0d0;
+      stroke-width: 0.1;
+    }
+
+    .footprint {
+      fill: rgba(74, 74, 74, 0.12);
       stroke: none;
+    }
+
+    .footprint.ghost {
+      fill: rgba(46, 125, 50, 0.15);
+    }
+
+    .footprint.invalid {
+      fill: rgba(198, 40, 40, 0.12);
+    }
+
+    .rail {
+      fill: none;
+      stroke: var(--color-rail, #4a4a4a);
+      stroke-width: 1.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .rail.ghost {
+      stroke: var(--color-valid, #2e7d32);
+      opacity: 0.7;
+    }
+
+    .rail.invalid {
+      stroke: var(--color-invalid, #c62828);
+    }
+
+    .sleeper {
+      stroke: var(--color-rail, #4a4a4a);
+      stroke-width: 0.6;
+      opacity: 0.5;
+    }
+
+    .selection-ring {
+      fill: none;
+      stroke: #1565c0;
+      stroke-width: 0.3;
+      stroke-dasharray: 1 0.5;
+    }
+
+    .invalid-ring {
+      fill: none;
+      stroke: var(--color-invalid, #c62828);
+      stroke-width: 0.4;
+    }
+
+    .open-end {
+      fill: #9e9e9e;
+      stroke: #fff;
+      stroke-width: 0.15;
+    }
+
+    .tooltip {
+      pointer-events: none;
+    }
+
+    .tooltip-bg {
+      fill: #1a1a1a;
+      opacity: 0.9;
+      rx: 0.5;
+    }
+
+    .tooltip-text {
+      fill: #fff;
+      font-size: 2.5px;
+      font-family: system-ui, sans-serif;
     }
   `;
 
   private getSvgPoint(event: MouseEvent): { x: number; y: number } {
-    const svg = this.renderRoot.querySelector('svg');
-    if (!svg) {
+    const svgEl = this.renderRoot.querySelector('svg');
+    if (!svgEl) {
       return { x: 0, y: 0 };
     }
-    const rect = svg.getBoundingClientRect();
+    const rect = svgEl.getBoundingClientRect();
     return {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top,
@@ -196,9 +270,9 @@ export class EditorCanvas extends LitElement {
     this.dispatchViewport({ zoom: newZoom, panX, panY });
   }
 
-  private getOpenEndMarkers(): OpenEndMarker[] {
+  private getOpenEndMarkers() {
     const result = validateLayout(this.layout, CATALOGUE_V1);
-    const markers: OpenEndMarker[] = [];
+    const markers = [];
 
     for (const issue of result.issues) {
       if (issue.code !== 'OPEN_END') {
@@ -262,7 +336,7 @@ export class EditorCanvas extends LitElement {
     const worldTransform = `translate(${panX} ${panY}) scale(${zoom})`;
     const openEnds = this.getOpenEndMarkers();
 
-    return html`
+    return svg`
       <svg
         data-testid="editor-canvas"
         @mousemove=${this.handleMouseMove}
@@ -272,35 +346,26 @@ export class EditorCanvas extends LitElement {
         @wheel=${this.handleWheel}
       >
         <g transform=${worldTransform}>
-          <editor-grid minX=${-16} minY=${-16} maxX=${96} maxY=${96}></editor-grid>
-
+          ${renderGrid(-16, -16, 96, 96)}
           <g class="layer-footprints">
-            ${this.layout.placements.map(
-              (placement) => html`
-                <track-piece-svg
-                  .placement=${placement}
-                  ?selected=${this.selectedInstanceId === placement.instanceId}
-                ></track-piece-svg>
-              `,
+            ${this.layout.placements.map((placement) =>
+              renderTrackPiece(placement, {
+                selected: this.selectedInstanceId === placement.instanceId,
+              }),
             )}
           </g>
-
           ${this.ghostPlacement
-            ? html`
-                <track-piece-svg
-                  .placement=${this.ghostPlacement}
-                  ghost
-                  ?invalid=${!this.ghostValid}
-                ></track-piece-svg>
-              `
+            ? renderTrackPiece(this.ghostPlacement, {
+                ghost: true,
+                invalid: !this.ghostValid,
+              })
             : nothing}
-
-          <validation-overlay
-            .openEnds=${openEnds}
-            .tooltipMessage=${this.tooltipMessage}
-            .tooltipX=${this.tooltipX}
-            .tooltipY=${this.tooltipY}
-          ></validation-overlay>
+          ${renderValidationOverlay(
+            openEnds,
+            this.tooltipMessage,
+            this.tooltipX,
+            this.tooltipY,
+          )}
         </g>
       </svg>
     `;
