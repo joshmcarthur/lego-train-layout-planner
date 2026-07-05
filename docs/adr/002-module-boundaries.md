@@ -52,9 +52,9 @@ public/
 
 ### Import rules
 
-1. **UI → domain only.** Code under `src/apps/web/` may import `@lego/*` domain
-   packages. Domain packages must never import Astro, Lit, or any file under
-   `src/apps/web/`.
+1. **UI → domain only.** Code under `src/apps/web/` may import `@track-layout/*`
+   domain packages. Domain packages must never import Astro, Lit, or any file
+   under `src/apps/web/`.
 2. **Domain independence.** Until a later plan specifies a dependency, domain
    packages remain independent of each other. Planned cross-package imports:
    - `connection-engine` → `piece-catalogue` (plan 03)
@@ -62,18 +62,18 @@ public/
    - `inventory` → `piece-catalogue` (plan 04)
    - `persistence` → layout/inventory types (plan 07)
 3. **No circular imports** between domain packages.
-4. **Tests** under `tests/unit/` import domain packages via the same `@lego/*`
-   path aliases as application code.
+4. **Tests** under `tests/unit/` import domain packages via the same
+   `@track-layout/*` path aliases as application code.
 
 ### Path aliases
 
 TypeScript path aliases in `tsconfig.json`:
 
-- `@lego/piece-catalogue` → `src/packages/piece-catalogue/index.ts`
-- `@lego/connection-engine` → `src/packages/connection-engine/index.ts`
-- `@lego/layout-generator` → `src/packages/layout-generator/index.ts`
-- `@lego/inventory` → `src/packages/inventory/index.ts`
-- `@lego/persistence` → `src/packages/persistence/index.ts`
+- `@track-layout/piece-catalogue` → `src/packages/piece-catalogue/index.ts`
+- `@track-layout/connection-engine` → `src/packages/connection-engine/index.ts`
+- `@track-layout/layout-generator` → `src/packages/layout-generator/index.ts`
+- `@track-layout/inventory` → `src/packages/inventory/index.ts`
+- `@track-layout/persistence` → `src/packages/persistence/index.ts`
 
 The same aliases are mirrored in `vitest.config.ts` `resolve.alias` so unit
 tests resolve packages identically to the app.

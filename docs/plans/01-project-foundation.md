@@ -100,7 +100,7 @@ public/
 | Area | Requirement |
 |------|-------------|
 | TypeScript | `strict: true`; no `any` in domain packages |
-| Path aliases | `@lego/piece-catalogue`, etc., via `tsconfig` paths |
+| Path aliases | `@track-layout/piece-catalogue`, etc., via `tsconfig` paths |
 | Test coverage | Domain packages: tests required before merge in later plans |
 | Performance | No long sync work on main thread in UI (enforced in plans 05–06) |
 | Accessibility | Baseline: semantic HTML in shell; editor a11y in plan 08 |

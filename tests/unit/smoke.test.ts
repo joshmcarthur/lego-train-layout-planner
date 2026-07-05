@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { PACKAGE_VERSION as connectionEngineVersion } from '@lego/connection-engine';
-import { PACKAGE_VERSION as inventoryVersion } from '@lego/inventory';
-import { PACKAGE_VERSION as layoutGeneratorVersion } from '@lego/layout-generator';
-import { PACKAGE_VERSION as persistenceVersion } from '@lego/persistence';
-import { PACKAGE_VERSION as pieceCatalogueVersion } from '@lego/piece-catalogue';
+import { PACKAGE_VERSION as connectionEngineVersion } from '@track-layout/connection-engine';
+import { PACKAGE_VERSION as inventoryVersion } from '@track-layout/inventory';
+import { PACKAGE_VERSION as layoutGeneratorVersion } from '@track-layout/layout-generator';
+import { PACKAGE_VERSION as persistenceVersion } from '@track-layout/persistence';
+import { PACKAGE_VERSION as pieceCatalogueVersion } from '@track-layout/piece-catalogue';
 
 describe('toolchain smoke', () => {
   it('runs vitest', () => {
