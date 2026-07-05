@@ -25,8 +25,8 @@ section calls for them.
 | 005 | Route graph semantics | [03](../plans/03-connection-engine.md) | Accepted |
 | 006 | Inventory storage schema | [04](../plans/04-inventory-and-onboarding.md) | Accepted |
 | 007 | Onboarding UX | [04](../plans/04-inventory-and-onboarding.md) | Accepted |
-| 008 | Editor interaction model | [05](../plans/05-manual-layout-editor.md) | Proposed |
-| 009 | Canvas rendering approach | [05](../plans/05-manual-layout-editor.md) | Proposed |
+| 008 | Editor interaction model | [05](../plans/05-manual-layout-editor.md) | Accepted |
+| 009 | Canvas rendering approach | [05](../plans/05-manual-layout-editor.md) | Accepted |
 | 010 | Layout generation algorithm | [06](../plans/06-layout-generator.md) | Proposed |
 | 011 | Generator UX | [06](../plans/06-layout-generator.md) | Proposed |
 | 012 | Serialization format | [07](../plans/07-persistence-sharing-and-layout-lifecycle.md) | Proposed |
