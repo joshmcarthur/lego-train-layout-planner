@@ -27,8 +27,8 @@ section calls for them.
 | 007 | Onboarding UX | [04](../plans/04-inventory-and-onboarding.md) | Accepted |
 | 008 | Editor interaction model | [05](../plans/05-manual-layout-editor.md) | Accepted |
 | 009 | Canvas rendering approach | [05](../plans/05-manual-layout-editor.md) | Accepted |
-| 010 | Layout generation algorithm | [06](../plans/06-layout-generator.md) | Proposed |
-| 011 | Generator UX | [06](../plans/06-layout-generator.md) | Proposed |
+| 010 | Layout generation algorithm | [06](../plans/06-layout-generator.md) | Accepted |
+| 011 | Generator UX | [06](../plans/06-layout-generator.md) | Accepted |
 | 012 | Serialization format | [07](../plans/07-persistence-sharing-and-layout-lifecycle.md) | Accepted |
 | 013 | Saved layouts index | [07](../plans/07-persistence-sharing-and-layout-lifecycle.md) | Accepted |
 | 014 | PWA offline strategy | [08](../plans/08-app-shell-pwa-and-accessibility.md) | Proposed |
