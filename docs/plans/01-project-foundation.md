@@ -143,8 +143,8 @@ prompt module list.
 
 - `.github/workflows/ci.yml`: Node 22, `npm ci`, lint, typecheck, `npm test`,
   `npm run build`, Playwright smoke test
-- `.github/workflows/deploy.yml`: build and deploy to GitHub Pages on push to
-  `main` (requires Pages source = GitHub Actions in repo settings)
+- `.github/workflows/deploy.yml`: build and deploy to GitHub Pages after CI
+  succeeds on `main` (requires Pages source = GitHub Actions in repo settings)
 
 ### 6. Developer docs
 
