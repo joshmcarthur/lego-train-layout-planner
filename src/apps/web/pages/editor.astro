@@ -1,11 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { EditorGate } from '../components/editor-gate';
 ---
 
 <BaseLayout title="Editor — Lego Train Layout Planner">
   <main>
-    <h1>Editor</h1>
-    <p>Coming in plan 05.</p>
-    <p><a href={import.meta.env.BASE_URL}>Back to home</a></p>
+    <EditorGate client:only="lit" />
   </main>
 </BaseLayout>

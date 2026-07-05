@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { InventoryOnboarding } from '../components/inventory-onboarding';
+---
+
+<BaseLayout title="Onboarding — Lego Train Layout Planner">
+  <main>
+    <InventoryOnboarding client:only="lit" />
+  </main>
+</BaseLayout>
