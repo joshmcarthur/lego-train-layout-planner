@@ -30,6 +30,9 @@ export class EditorCanvas extends LitElement {
   @property({ type: Boolean })
   panMode = false;
 
+  @property({ type: Boolean })
+  readOnly = false;
+
   @state()
   private tooltipMessage = '';
 
@@ -205,7 +208,9 @@ export class EditorCanvas extends LitElement {
 
     const point = this.getSvgPoint(event);
     const stud = this.toStud(point.x, point.y);
-    this.dispatchPointer('move', stud.x, stud.y);
+    if (!this.readOnly) {
+      this.dispatchPointer('move', stud.x, stud.y);
+    }
   }
 
   private handleMouseDown(event: MouseEvent): void {
@@ -223,7 +228,7 @@ export class EditorCanvas extends LitElement {
       return;
     }
 
-    if (event.button !== 0) {
+    if (event.button !== 0 || this.readOnly) {
       return;
     }
 
@@ -339,6 +344,9 @@ export class EditorCanvas extends LitElement {
     return html`
       <svg
         data-testid="editor-canvas"
+        role="application"
+        aria-label="Track layout editor"
+        tabindex="0"
         @mousemove=${this.handleMouseMove}
         @mousedown=${this.handleMouseDown}
         @mouseup=${this.handleMouseUp}

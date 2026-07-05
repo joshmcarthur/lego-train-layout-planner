@@ -1,7 +1,7 @@
 import { validateLayout } from '@track-layout/connection-engine';
 import { getRemainingCounts } from '@track-layout/inventory';
 import { CATALOGUE_V1 } from '@track-layout/piece-catalogue';
-import { LitElement, css, html } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
 import { getInventoryShortfall } from './fork-banner.ts';
@@ -18,6 +18,7 @@ import './fork-banner.ts';
 import './import-export-menu.ts';
 import './inventory-palette.ts';
 import './layout-library.ts';
+import './mobile-editor-banner.ts';
 import './save-load-menu.ts';
 import './share-link-button.ts';
 
@@ -35,8 +36,16 @@ export class LayoutEditor extends LitElement {
   @state()
   private spaceHeld = false;
 
+  @state()
+  private mobileView = false;
+
   private unsubscribe: (() => void) | null = null;
   private sessionEpoch = 0;
+  private mobileQuery: MediaQueryList | null = null;
+
+  private handleMobileChange = (event: MediaQueryListEvent): void => {
+    this.mobileView = event.matches;
+  };
 
   static override styles = css`
     :host {
@@ -73,12 +82,16 @@ export class LayoutEditor extends LitElement {
     .workspace {
       display: grid;
       grid-template-columns: minmax(12rem, 14rem) 1fr;
-      gap: 1rem;
+      gap: var(--space-2, 1rem);
       align-items: start;
     }
 
+    .workspace.mobile {
+      grid-template-columns: 1fr;
+    }
+
     @media (max-width: 640px) {
-      .workspace {
+      .workspace:not(.mobile) {
         grid-template-columns: 1fr;
       }
     }
@@ -104,6 +117,12 @@ export class LayoutEditor extends LitElement {
 
     window.addEventListener('keydown', this.handleWindowKeyDown);
     window.addEventListener('keyup', this.handleWindowKeyUp);
+
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      this.mobileQuery = window.matchMedia('(max-width: 1023px)');
+      this.mobileView = this.mobileQuery.matches;
+      this.mobileQuery.addEventListener('change', this.handleMobileChange);
+    }
   }
 
   private syncFromStore(): void {
@@ -135,6 +154,8 @@ export class LayoutEditor extends LitElement {
     this.unsubscribe = null;
     window.removeEventListener('keydown', this.handleWindowKeyDown);
     window.removeEventListener('keyup', this.handleWindowKeyUp);
+    this.mobileQuery?.removeEventListener('change', this.handleMobileChange);
+    this.mobileQuery = null;
   }
 
   override firstUpdated(): void {
@@ -173,7 +194,7 @@ export class LayoutEditor extends LitElement {
   };
 
   private handleKeyDown(event: KeyboardEvent): void {
-    if (!this.editorState) {
+    if (!this.editorState || this.mobileView) {
       return;
     }
 
@@ -259,7 +280,7 @@ export class LayoutEditor extends LitElement {
   }
 
   private handleCanvasPointer(event: CustomEvent<{ type: string; studX: number; studY: number }>): void {
-    if (!this.editorState) {
+    if (!this.editorState || this.mobileView) {
       return;
     }
 
@@ -321,6 +342,8 @@ export class LayoutEditor extends LitElement {
           .shortfalls=${shortfalls}
         ></fork-banner>
 
+        <mobile-editor-banner .visible=${this.mobileView}></mobile-editor-banner>
+
         <div class="header">
           <h1>Editor</h1>
           <div class="header-actions">
@@ -340,12 +363,16 @@ export class LayoutEditor extends LitElement {
           ></editor-toolbar>
         </div>
 
-        <div class="workspace">
-          <inventory-palette
-            .remaining=${this.remaining}
-            .selectedPieceId=${this.editorState.selectedPieceId}
-            @piece-select=${this.handlePieceSelect}
-          ></inventory-palette>
+        <div class="workspace ${this.mobileView ? 'mobile' : ''}">
+          ${this.mobileView
+            ? nothing
+            : html`
+                <inventory-palette
+                  .remaining=${this.remaining}
+                  .selectedPieceId=${this.editorState.selectedPieceId}
+                  @piece-select=${this.handlePieceSelect}
+                ></inventory-palette>
+              `}
 
           <editor-canvas
             .layout=${this.editorState.layout}
@@ -354,15 +381,18 @@ export class LayoutEditor extends LitElement {
             .ghostValid=${ghost?.valid ?? false}
             .selectedInstanceId=${this.editorState.selectedInstanceId}
             .panMode=${this.spaceHeld}
+            .readOnly=${this.mobileView}
             @canvas-pointer=${this.handleCanvasPointer}
             @instance-select=${this.handleInstanceSelect}
             @viewport-change=${this.handleViewportChange}
           ></editor-canvas>
         </div>
 
-        <p class="hint">
-          Click palette piece, then click grid to place. R or scroll to rotate. Space+drag to pan.
-          ${layoutIssues.valid ? 'Layout valid.' : `${layoutIssues.issues.filter((i) => i.severity === 'error').length} issue(s).`}
+        <p class="hint" aria-live="polite">
+          ${this.mobileView
+            ? 'Pan and zoom to explore the layout. Use a desktop to place and edit pieces.'
+            : html`Click palette piece, then click grid to place. R or scroll to rotate. Space+drag to pan.
+          ${layoutIssues.valid ? 'Layout valid.' : `${layoutIssues.issues.filter((i) => i.severity === 'error').length} issue(s).`}`}
         </p>
       </div>
     `;
