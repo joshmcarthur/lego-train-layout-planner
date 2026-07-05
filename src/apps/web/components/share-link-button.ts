@@ -33,9 +33,20 @@ export class ShareLinkButton extends LitElement {
     }
 
     .toast {
-      margin-top: 0.35rem;
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      background: #1b5e20;
+      color: #fff;
       font-size: 0.875rem;
-      color: #2e7d32;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+    }
+
+    .toast.error {
+      background: #b71c1c;
     }
 
     .modal-backdrop {
@@ -88,6 +99,9 @@ export class ShareLinkButton extends LitElement {
     } catch {
       this.message = 'Could not copy link';
     }
+    window.setTimeout(() => {
+      this.message = '';
+    }, 3000);
   }
 
   private async handleExportFromModal(): Promise<void> {
@@ -106,7 +120,11 @@ export class ShareLinkButton extends LitElement {
   override render() {
     return html`
       <button type="button" @click=${this.handleShare}>Share link</button>
-      ${this.message ? html`<div class="toast" role="status">${this.message}</div>` : null}
+      ${this.message
+        ? html`<div class="toast ${this.message === 'Could not copy link' ? 'error' : ''}" role="status">
+            ${this.message}
+          </div>`
+        : null}
       ${this.showModal
         ? html`<div class="modal-backdrop" @click=${() => {
             this.showModal = false;

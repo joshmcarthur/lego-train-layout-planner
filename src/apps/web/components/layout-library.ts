@@ -21,6 +21,10 @@ export class LayoutLibrary extends LitElement {
   private entries: SavedLayoutIndex[] = [];
 
   static override styles = css`
+    :host {
+      display: block;
+    }
+
     button {
       padding: 0.4rem 0.75rem;
       border: 1px solid #ccc;
@@ -34,24 +38,45 @@ export class LayoutLibrary extends LitElement {
       background: #f5f5f5;
     }
 
-    .panel {
-      margin-top: 0.5rem;
+    dialog {
       border: 1px solid #ddd;
       border-radius: 0.5rem;
+      padding: 0;
+      max-width: 28rem;
+      width: calc(100% - 2rem);
       overflow: hidden;
-      min-width: 16rem;
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.125rem;
     }
 
     ul {
       list-style: none;
       margin: 0;
       padding: 0;
+      max-height: 24rem;
+      overflow: auto;
     }
 
     li {
       display: grid;
       gap: 0.35rem;
-      padding: 0.75rem 1rem;
+      padding: 0.75rem 1.25rem;
       border-bottom: 1px solid #eee;
     }
 
@@ -71,7 +96,7 @@ export class LayoutLibrary extends LitElement {
     }
 
     .empty {
-      padding: 0.75rem 1rem;
+      padding: 1.25rem;
       color: #666;
       font-size: 0.875rem;
     }
@@ -81,10 +106,31 @@ export class LayoutLibrary extends LitElement {
     this.entries = listLayouts();
   }
 
-  private toggle(): void {
-    this.open = !this.open;
-    if (this.open) {
-      this.refresh();
+  private openDialog(): void {
+    this.open = true;
+    this.refresh();
+  }
+
+  private closeDialog(): void {
+    this.open = false;
+  }
+
+  private handleDialogToggle(event: Event): void {
+    const dialog = event.target as HTMLDialogElement;
+    this.open = dialog.open;
+  }
+
+  override updated(changed: Map<string, unknown>): void {
+    if (changed.has('open')) {
+      const dialog = this.renderRoot.querySelector('dialog');
+      if (!dialog) {
+        return;
+      }
+      if (this.open && !dialog.open) {
+        dialog.showModal();
+      } else if (!this.open && dialog.open) {
+        dialog.close();
+      }
     }
   }
 
@@ -96,7 +142,7 @@ export class LayoutLibrary extends LitElement {
     loadEditorSession(saved.layout, {
       catalogueMismatch: saved.catalogueVersion !== CATALOGUE_VERSION,
     });
-    this.open = false;
+    this.closeDialog();
     this.dispatchEvent(new CustomEvent('layout-opened', { bubbles: true, composed: true }));
   }
 
@@ -127,28 +173,28 @@ export class LayoutLibrary extends LitElement {
 
   override render() {
     return html`
-      <button type="button" @click=${this.toggle}>Library</button>
-      ${this.open
-        ? html`<div class="panel">
-            ${this.entries.length === 0
-              ? html`<div class="empty">No saved layouts yet.</div>`
-              : html`<ul>
-                  ${this.entries.map(
-                    (entry) => html`<li>
-                      <strong>${entry.name}</strong>
-                      <div class="meta">${new Date(entry.updatedAt).toLocaleString()}</div>
-                      <div class="row-actions">
-                        <button type="button" @click=${() => this.openLayout(entry.id)}>Open</button>
-                        <button type="button" @click=${() => this.duplicateLayout(entry.id)}>
-                          Duplicate
-                        </button>
-                        <button type="button" @click=${() => this.removeLayout(entry.id)}>Delete</button>
-                      </div>
-                    </li>`,
-                  )}
-                </ul>`}
-          </div>`
-        : null}
+      <button type="button" @click=${this.openDialog}>Library</button>
+      <dialog @toggle=${this.handleDialogToggle}>
+        <div class="dialog-header">
+          <h2>Saved layouts</h2>
+          <button type="button" @click=${this.closeDialog}>Close</button>
+        </div>
+        ${this.entries.length === 0
+          ? html`<div class="empty">No saved layouts yet.</div>`
+          : html`<ul>
+              ${this.entries.map(
+                (entry) => html`<li>
+                  <strong>${entry.name}</strong>
+                  <div class="meta">${new Date(entry.updatedAt).toLocaleString()}</div>
+                  <div class="row-actions">
+                    <button type="button" @click=${() => this.openLayout(entry.id)}>Open</button>
+                    <button type="button" @click=${() => this.duplicateLayout(entry.id)}>Duplicate</button>
+                    <button type="button" @click=${() => this.removeLayout(entry.id)}>Delete</button>
+                  </div>
+                </li>`,
+              )}
+            </ul>`}
+      </dialog>
     `;
   }
 }
