@@ -11,7 +11,7 @@ import { CATALOGUE_V1, type PieceCatalogue } from '@track-layout/piece-catalogue
 
 import { enumerateAttachments } from './attach.ts';
 import { isDuplicate } from './dedupe.ts';
-import { getOpenPorts, prioritizeFrontier } from './frontier.ts';
+import { getOpenPorts } from './frontier.ts';
 import { sortCandidates } from './scoring.ts';
 import {
   defaultGeneratorOptions,

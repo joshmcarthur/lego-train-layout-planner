@@ -26,7 +26,9 @@ function transformPlacement(
   rotationSteps: number,
   mirror: boolean,
 ): { pieceId: string; x: number; y: number; rotation: Heading } {
-  let { x, y } = rotatePoint(placement.x, placement.y, rotationSteps);
+  const rotated = rotatePoint(placement.x, placement.y, rotationSteps);
+  const x = rotated.x;
+  let y = rotated.y;
   let rotation = ((placement.rotation + rotationSteps) % 16) as Heading;
 
   if (mirror) {

@@ -32,9 +32,6 @@ export class LayoutGeneratorPanel extends LitElement {
   private explored = 0;
 
   @state()
-  private found = 0;
-
-  @state()
   private candidates: Layout[] = [];
 
   @state()
@@ -179,7 +176,6 @@ export class LayoutGeneratorPanel extends LitElement {
     this.terminateWorker();
     this.phase = 'running';
     this.explored = 0;
-    this.found = 0;
     this.candidates = [];
     this.message = '';
     this.exhausted = false;
@@ -192,7 +188,6 @@ export class LayoutGeneratorPanel extends LitElement {
       const data = event.data;
       if (data.status === 'progress') {
         this.explored = data.explored;
-        this.found = data.found;
         return;
       }
 
@@ -201,7 +196,6 @@ export class LayoutGeneratorPanel extends LitElement {
       this.exhausted = data.exhausted;
       this.message = data.message ?? '';
       this.explored = data.explored;
-      this.found = data.candidates.length;
       this.terminateWorker();
     };
 
