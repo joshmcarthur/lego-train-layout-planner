@@ -1,0 +1,15 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@lego/piece-catalogue": ["src/packages/piece-catalogue/index.ts"],
+      "@lego/connection-engine": ["src/packages/connection-engine/index.ts"],
+      "@lego/layout-generator": ["src/packages/layout-generator/index.ts"],
+      "@lego/inventory": ["src/packages/inventory/index.ts"],
+      "@lego/persistence": ["src/packages/persistence/index.ts"]
+    }
+  },
+  "include": [".astro/types.d.ts", "src/**/*", "tests/**/*"],
+  "exclude": ["dist", "node_modules"]
+}

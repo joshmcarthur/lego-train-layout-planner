@@ -141,8 +141,10 @@ prompt module list.
 
 ### 5. CI
 
-- `.github/workflows/ci.yml`: Node LTS, `npm ci`, lint, typecheck, `npm test`,
-  `npm run build`
+- `.github/workflows/ci.yml`: Node 22, `npm ci`, lint, typecheck, `npm test`,
+  `npm run build`, Playwright smoke test
+- `.github/workflows/deploy.yml`: build and deploy to GitHub Pages on push to
+  `main` (requires Pages source = GitHub Actions in repo settings)
 
 ### 6. Developer docs
 

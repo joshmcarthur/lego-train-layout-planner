@@ -1,0 +1,35 @@
+:root {
+  --color-grid: #e8e8e8;
+  --color-rail: #4a4a4a;
+  --color-invalid: #c62828;
+  --color-valid: #2e7d32;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  line-height: 1.5;
+  color: #1a1a1a;
+  background: #fafafa;
+}
+
+main {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+a {
+  color: #1565c0;
+}
