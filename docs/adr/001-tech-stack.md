@@ -67,6 +67,9 @@ implementation time:
 - Astro + Lit integration must be verified early (see plan 01 Lit smoke
   counter) to de-risk the editor in plan 05.
 - Path aliases must be mirrored in both `tsconfig.json` and `vitest.config.ts`.
+- Lit components require `experimentalDecorators: true` and
+  `useDefineForClassFields: false` in `tsconfig.json` for `@state()` /
+  `@property()` decorators to typecheck and hydrate correctly under Astro SSR.
 - Two TypeScript check paths: `astro check` for the app shell, `tsc` for domain
   packages.
 
