@@ -22,7 +22,7 @@ section calls for them.
 | 002 | Module boundaries | [01](../plans/01-project-foundation.md) | Accepted |
 | 003 | Grid coordinate system | [02](../plans/02-domain-research-and-piece-catalogue.md) | Proposed |
 | 004 | Port and connection model | [02](../plans/02-domain-research-and-piece-catalogue.md) | Proposed |
-| 005 | Route graph semantics | [03](../plans/03-connection-engine.md) | Proposed |
+| 005 | Route graph semantics | [03](../plans/03-connection-engine.md) | Accepted |
 | 006 | Inventory storage schema | [04](../plans/04-inventory-and-onboarding.md) | Proposed |
 | 007 | Onboarding UX | [04](../plans/04-inventory-and-onboarding.md) | Proposed |
 | 008 | Editor interaction model | [05](../plans/05-manual-layout-editor.md) | Proposed |

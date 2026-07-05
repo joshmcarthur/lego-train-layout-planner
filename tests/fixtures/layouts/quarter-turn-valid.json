@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "catalogueVersion": 1,
+  "description": "Straight, four curves, straight (90° turn)",
+  "placements": [
+    {
+      "instanceId": "qt-straight-1",
+      "pieceId": "straight-16",
+      "x": 0,
+      "y": 0,
+      "rotation": 0
+    },
+    {
+      "instanceId": "qt-curve-1",
+      "pieceId": "curve-r40",
+      "x": 16,
+      "y": 0,
+      "rotation": 0
+    },
+    {
+      "instanceId": "qt-curve-2",
+      "pieceId": "curve-r40",
+      "x": 31.30733729460359,
+      "y": 3.0448186995485287,
+      "rotation": 1
+    },
+    {
+      "instanceId": "qt-curve-3",
+      "pieceId": "curve-r40",
+      "x": 46.61467458920718,
+      "y": -2.6645352591003757e-15,
+      "rotation": 2
+    },
+    {
+      "instanceId": "qt-curve-4",
+      "pieceId": "curve-r40",
+      "x": 59.591608542065494,
+      "y": -8.670910052989573,
+      "rotation": 3
+    },
+    {
+      "instanceId": "qt-straight-2",
+      "pieceId": "straight-16",
+      "x": 68.26251859505507,
+      "y": -21.647844005847883,
+      "rotation": 4
+    }
+  ],
+  "expect": {
+    "valid": true,
+    "issues": [
+      {
+        "severity": "info",
+        "code": "OPEN_END"
+      },
+      {
+        "severity": "info",
+        "code": "OPEN_END"
+      }
+    ]
+  }
+}
