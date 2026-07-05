@@ -10,22 +10,22 @@ track execution order and status.
 
 ## Plan sequence
 
-| # | Plan | Summary | Depends on |
-|---|------|---------|------------|
-| 01 | [Project foundation](./01-project-foundation.md) | Repo scaffold, stack choice, module layout, CI, test harness | — |
-| 02 | [Domain research & piece catalogue](./02-domain-research-and-piece-catalogue.md) | Lego geometry research, piece definitions, coordinate system | 01 |
-| 03 | [Connection engine](./03-connection-engine.md) | Port alignment, adjacency, route graph, validation | 02 |
-| 04 | [Inventory & onboarding](./04-inventory-and-onboarding.md) | Inventory entry, random mode, local persistence | 01, 02 |
-| 05 | [Manual layout editor](./05-manual-layout-editor.md) | Grid canvas, placement, rotation, inventory panel | 03, 04 |
-| 06 | [Layout generator](./06-layout-generator.md) | Candidate search, limits, results UX | 03, 04 (05 for “open in editor” handoff only) |
-| 07 | [Persistence, sharing & layout lifecycle](./07-persistence-sharing-and-layout-lifecycle.md) | Save/load, URL codec, export, fork/extend | 04, 05 |
-| 08 | [App shell, PWA & accessibility](./08-app-shell-pwa-and-accessibility.md) | Routing, offline, a11y, mobile posture | 04–07 |
+| # | Plan | Issue | Summary | Depends on |
+|---|------|-------|---------|------------|
+| 01 | [Project foundation](./01-project-foundation.md) | [#1](https://github.com/joshmcarthur/lego-train-layout-planner/issues/1) | Repo scaffold, stack choice, module layout, CI, test harness | — |
+| 02 | [Domain research & piece catalogue](./02-domain-research-and-piece-catalogue.md) | [#2](https://github.com/joshmcarthur/lego-train-layout-planner/issues/2) | Lego geometry research, piece definitions, coordinate system | 01 |
+| 03 | [Connection engine](./03-connection-engine.md) | [#3](https://github.com/joshmcarthur/lego-train-layout-planner/issues/3) | Port alignment, adjacency, route graph, validation | 02 |
+| 04 | [Inventory & onboarding](./04-inventory-and-onboarding.md) | [#4](https://github.com/joshmcarthur/lego-train-layout-planner/issues/4) | Inventory entry, random mode, local persistence | 01, 02 |
+| 05 | [Manual layout editor](./05-manual-layout-editor.md) | [#5](https://github.com/joshmcarthur/lego-train-layout-planner/issues/5) | Grid canvas, placement, rotation, inventory panel | 03, 04 |
+| 06 | [Layout generator](./06-layout-generator.md) | [#7](https://github.com/joshmcarthur/lego-train-layout-planner/issues/7) | Candidate search, limits, results UX | 03, 04 (05 for “open in editor” handoff only) |
+| 07 | [Persistence, sharing & layout lifecycle](./07-persistence-sharing-and-layout-lifecycle.md) | [#6](https://github.com/joshmcarthur/lego-train-layout-planner/issues/6) | Save/load, URL codec, export, fork/extend | 04, 05 |
+| 08 | [App shell, PWA & accessibility](./08-app-shell-pwa-and-accessibility.md) | [#8](https://github.com/joshmcarthur/lego-train-layout-planner/issues/8) | Routing, offline, a11y, mobile posture | 04–07 |
 
 Post-MVP (optional, not blocking MVP):
 
-| # | Plan | Summary |
-|---|------|---------|
-| 09 | [Photo import feasibility](./09-photo-import-feasibility.md) | Semi-manual trace mode; phased CV assessment |
+| # | Plan | Issue |
+|---|------|-------|
+| 09 | [Photo import feasibility](./09-photo-import-feasibility.md) | [#9](https://github.com/joshmcarthur/lego-train-layout-planner/issues/9) |
 
 ## Dependency graph
 
