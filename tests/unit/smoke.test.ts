@@ -24,7 +24,7 @@ describe('toolchain smoke', () => {
     expect(connectionEngineVersion).toBe('0.1.0');
     expect(typeof validateLayout).toBe('function');
     expect(typeof buildRouteGraph).toBe('function');
-    expect(layoutGeneratorVersion).toBe('0.0.0');
+    expect(layoutGeneratorVersion).toBe('0.1.0');
     expect(inventoryVersion).toBe('0.1.0');
     expect(persistenceVersion).toBe('0.1.0');
   });

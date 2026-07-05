@@ -32,3 +32,15 @@ export function frontierKey(port: WorldPort): string {
 export function sortFrontier(ports: WorldPort[]): WorldPort[] {
   return [...ports].sort((a, b) => frontierKey(a).localeCompare(frontierKey(b)));
 }
+
+/** Prefer open ports on the most recently placed piece (chain extension heuristic). */
+export function prioritizeFrontier(ports: WorldPort[], lastInstanceId: string | null): WorldPort[] {
+  const sorted = sortFrontier(ports);
+  if (!lastInstanceId) {
+    return sorted;
+  }
+
+  const onLast = sorted.filter((port) => port.instanceId === lastInstanceId);
+  const others = sorted.filter((port) => port.instanceId !== lastInstanceId);
+  return [...onLast, ...others];
+}

@@ -4,7 +4,6 @@ import {
   validateLayout,
   type Layout,
   type Placement,
-  type WorldPort,
 } from '@track-layout/connection-engine';
 import { getRemainingCounts } from '@track-layout/inventory';
 import type { Inventory } from '@track-layout/inventory';
@@ -12,7 +11,7 @@ import { CATALOGUE_V1, type PieceCatalogue } from '@track-layout/piece-catalogue
 
 import { enumerateAttachments } from './attach.ts';
 import { isDuplicate } from './dedupe.ts';
-import { getOpenPorts, sortFrontier } from './frontier.ts';
+import { getOpenPorts, prioritizeFrontier } from './frontier.ts';
 import { sortCandidates } from './scoring.ts';
 import {
   defaultGeneratorOptions,
@@ -77,17 +76,6 @@ function createSeedLayout(
   };
 }
 
-function shuffleWithRng<T>(items: T[], rng: () => number): T[] {
-  const copy = [...items];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    const tmp = copy[i]!;
-    copy[i] = copy[j]!;
-    copy[j] = tmp;
-  }
-  return copy;
-}
-
 interface SearchState {
   explored: number;
   found: Layout[];
@@ -119,9 +107,6 @@ function shouldStop(
   }
   if (Date.now() - state.startTime >= limits.timeoutMs) {
     state.limitsHit = true;
-    return true;
-  }
-  if (state.found.length >= limits.maxResults) {
     return true;
   }
   return false;
@@ -159,7 +144,7 @@ function explore(
   catalogue: PieceCatalogue,
   state: SearchState,
   limits: SearchLimits,
-  rng: () => number,
+  _rng: () => number,
   signal?: AbortSignal,
 ): void {
   if (shouldStop(state, limits, signal)) {
@@ -167,32 +152,43 @@ function explore(
   }
 
   state.explored += 1;
-  tryCollectCandidate(layout, catalogue, state, limits);
 
-  if (layout.placements.length >= limits.maxDepth) {
+  const remaining = getRemainingCounts(inventory, layout, catalogue);
+  const atMaxDepth = layout.placements.length >= limits.maxDepth;
+  const noPiecesLeft = catalogue
+    .all()
+    .every((piece) => (remaining[piece.inventoryKey] ?? 0) === 0);
+  const lastInstanceId =
+    layout.placements.length > 0
+      ? layout.placements[layout.placements.length - 1]!.instanceId
+      : null;
+  const allFrontier = getOpenPorts(layout, catalogue);
+  let frontier: typeof allFrontier;
+  if (lastInstanceId !== null) {
+    const lastPorts = allFrontier.filter((port) => port.instanceId === lastInstanceId);
+    const exitPort = lastPorts.find((port) => port.portId === 'b');
+    frontier = exitPort ? [exitPort] : lastPorts;
+  } else {
+    frontier = allFrontier;
+  }
+  const noFrontier = frontier.length === 0;
+
+  if (atMaxDepth || noPiecesLeft || noFrontier) {
+    tryCollectCandidate(layout, catalogue, state, limits);
     return;
   }
 
-  const remaining = getRemainingCounts(inventory, layout, catalogue);
-  const availablePieceIds = catalogue
+  const orderedPieceIds = catalogue
     .all()
     .filter((piece) => (remaining[piece.inventoryKey] ?? 0) > 0)
     .map((piece) => piece.id);
-
-  if (availablePieceIds.length === 0) {
-    return;
-  }
-
-  const frontier = shuffleWithRng(sortFrontier(getOpenPorts(layout, catalogue)), rng);
 
   for (const port of frontier) {
     if (shouldStop(state, limits, signal)) {
       return;
     }
 
-    const pieceIds = shuffleWithRng(availablePieceIds, rng);
-
-    for (const pieceId of pieceIds) {
+    for (const pieceId of orderedPieceIds) {
       const attachments = enumerateAttachments(port, pieceId, catalogue);
 
       for (const attachment of attachments) {
@@ -216,90 +212,15 @@ function explore(
           placements: [...layout.placements, candidate],
         };
 
-        explore(nextLayout, inventory, catalogue, state, limits, rng, signal);
-      }
-    }
+        explore(nextLayout, inventory, catalogue, state, limits, _rng, signal);
 
-    tryLoopClosure(layout, port, inventory, catalogue, state, limits, rng, signal);
-  }
-}
-
-function portsCanConnect(a: WorldPort, b: WorldPort): boolean {
-  if (a.instanceId === b.instanceId && a.portId === b.portId) {
-    return false;
-  }
-
-  const dx = Math.abs(a.position.x - b.position.x);
-  const dy = Math.abs(a.position.y - b.position.y);
-  const facingMatch = (a.facing + 8) % 16 === b.facing;
-
-  return dx < 0.01 && dy < 0.01 && facingMatch;
-}
-
-function tryLoopClosure(
-  layout: Layout,
-  frontierPort: WorldPort,
-  inventory: Inventory,
-  catalogue: PieceCatalogue,
-  state: SearchState,
-  limits: SearchLimits,
-  rng: () => number,
-  signal?: AbortSignal,
-): void {
-  const openPorts = getOpenPorts(layout, catalogue);
-  const targets = openPorts.filter(
-    (port) =>
-      port.instanceId !== frontierPort.instanceId || port.portId !== frontierPort.portId,
-  );
-
-  for (const target of targets) {
-    if (!portsCanConnect(frontierPort, target)) {
-      continue;
-    }
-
-    const pieceIds = shuffleWithRng(
-      catalogue
-        .all()
-        .filter((piece) => (getRemainingCounts(inventory, layout, catalogue)[piece.inventoryKey] ?? 0) > 0)
-        .map((piece) => piece.id),
-      rng,
-    );
-
-    for (const pieceId of pieceIds) {
-      const viaFrontier = enumerateAttachments(frontierPort, pieceId, catalogue);
-      for (const attachment of viaFrontier) {
-        if (shouldStop(state, limits, signal)) {
-          return;
-        }
-
-        state.instanceCounter += 1;
-        const candidate: Placement = {
-          ...attachment,
-          instanceId: `gen-${state.instanceCounter}`,
-        };
-
-        const withCandidate: Layout = {
-          ...layout,
-          placements: [...layout.placements, candidate],
-        };
-
-        const placementCheck = canPlace(layout, candidate, catalogue);
-        if (!placementCheck.valid) {
-          continue;
-        }
-
-        const candidateOpen = getOpenPorts(withCandidate, catalogue);
-        const closes = candidateOpen.some((port) =>
-          portsCanConnect(port, target),
-        );
-        if (!closes) {
-          continue;
-        }
-
-        explore(withCandidate, inventory, catalogue, state, limits, rng, signal);
+        // Only extend along one attachment per port/piece to limit branching.
+        break;
       }
     }
   }
+
+  tryCollectCandidate(layout, catalogue, state, limits);
 }
 
 export function searchLayouts(

@@ -2,7 +2,7 @@ export const PACKAGE_VERSION = '0.1.0';
 
 export { attachToFrontier, enumerateAttachments } from './attach.ts';
 export { canonicalHash, isDuplicate } from './dedupe.ts';
-export { frontierKey, getOpenPorts, sortFrontier } from './frontier.ts';
+export { frontierKey, getOpenPorts, prioritizeFrontier, sortFrontier } from './frontier.ts';
 export { compareScores, scoreLayout, sortCandidates } from './scoring.ts';
 export { searchLayouts } from './search.ts';
 export { handleWorkerRequest } from './worker.ts';
