@@ -2,22 +2,12 @@ import { expect, test } from '@playwright/test';
 
 import type { Layout } from '../../src/packages/connection-engine/types.ts';
 import { INVENTORY_STORAGE_KEY } from '../../src/packages/persistence/inventory-store.ts';
+import { inventoryFixture } from './helpers/inventory.ts';
 import {
   createSerializedAppState,
   encodeShareUrl,
 } from '../../src/packages/persistence/index.ts';
 import { CATALOGUE_VERSION } from '../../src/packages/piece-catalogue/index.ts';
-
-const inventoryFixture = {
-  schemaVersion: 1 as const,
-  counts: {
-    'straight-16': 4,
-    'curve-r40': 0,
-    'switch-left': 0,
-    'switch-right': 0,
-  },
-  updatedAt: '2026-07-05T00:00:00.000Z',
-};
 
 const sharedLayout: Layout = {
   schemaVersion: 1,
@@ -50,7 +40,8 @@ test('share URL restores layout in a fresh session', async ({ page, baseURL }) =
   const share = encodeShareUrl(state, editorPath);
   expect(share.tooLong).toBe(false);
 
-  await page.addInitScript(
+  await page.goto('/');
+  await page.evaluate(
     ({ key, value }) => {
       localStorage.setItem(key, value);
     },

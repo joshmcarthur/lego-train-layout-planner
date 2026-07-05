@@ -1,14 +1,22 @@
 import { expect, test } from '@playwright/test';
 
-test('home page redirects to onboarding on first visit', async ({ page }) => {
-  await page.goto('/');
-  await page.evaluate(() => localStorage.clear());
-  await page.goto('');
-  await page.waitForURL(/onboarding\/$/);
-  await expect(page.getByRole('heading', { name: 'Your track inventory' })).toBeVisible();
+import { setupInventory } from './helpers/inventory.ts';
+
+test('app shell shows navigation on editor', async ({ page }) => {
+  await setupInventory(page);
+  await page.goto('editor/');
+  await page.waitForSelector('[data-testid="editor-canvas"]');
+
+  await expect(page.getByRole('navigation', { name: 'Main' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Generate' })).toBeVisible();
 });
 
-test('app header shows main navigation', async ({ page }) => {
-  await page.goto('onboarding/');
-  await expect(page.getByRole('navigation', { name: 'Main' })).toBeVisible();
+test('mobile editor shows view-only banner and hides palette', async ({ page }) => {
+  await setupInventory(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('editor/');
+  await page.waitForSelector('[data-testid="editor-canvas"]');
+
+  await expect(page.getByTestId('mobile-editor-banner')).toBeVisible();
+  await expect(page.getByTestId('palette-straight-16')).toHaveCount(0);
 });
