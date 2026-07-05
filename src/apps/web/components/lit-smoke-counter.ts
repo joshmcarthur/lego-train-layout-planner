@@ -1,6 +1,9 @@
 import { LitElement, css, html } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
 
+@customElement('lit-smoke-counter')
 export class LitSmokeCounter extends LitElement {
+  @state()
   private count = 0;
 
   static override styles = css`
@@ -16,10 +19,9 @@ export class LitSmokeCounter extends LitElement {
     }
   `;
 
-  private increment = (): void => {
+  private increment(): void {
     this.count += 1;
-    this.requestUpdate();
-  };
+  }
 
   override render() {
     return html`
@@ -28,8 +30,6 @@ export class LitSmokeCounter extends LitElement {
     `;
   }
 }
-
-customElements.define('lit-smoke-counter', LitSmokeCounter);
 
 declare global {
   interface HTMLElementTagNameMap {
