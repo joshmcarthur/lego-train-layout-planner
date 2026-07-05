@@ -18,8 +18,8 @@ section calls for them.
 
 | ADR | Title | Plan | Status |
 |-----|-------|------|--------|
-| 001 | Tech stack | [01](../plans/01-project-foundation.md) | Proposed |
-| 002 | Module boundaries | [01](../plans/01-project-foundation.md) | Proposed |
+| 001 | Tech stack | [01](../plans/01-project-foundation.md) | Accepted |
+| 002 | Module boundaries | [01](../plans/01-project-foundation.md) | Accepted |
 | 003 | Grid coordinate system | [02](../plans/02-domain-research-and-piece-catalogue.md) | Proposed |
 | 004 | Port and connection model | [02](../plans/02-domain-research-and-piece-catalogue.md) | Proposed |
 | 005 | Route graph semantics | [03](../plans/03-connection-engine.md) | Proposed |
