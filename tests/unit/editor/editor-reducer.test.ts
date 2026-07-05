@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { CATALOGUE_V1, type Heading } from '@track-layout/piece-catalogue';
+import { validateLayout } from '@track-layout/connection-engine';
 import { createInventory } from '@track-layout/inventory';
+import { CATALOGUE_V1, type Heading } from '@track-layout/piece-catalogue';
 
 import {
   createEditorState,
@@ -174,5 +175,20 @@ describe('resolvePlacement', () => {
       y: 0,
       rotation: 0,
     });
+  });
+});
+
+describe('two-straights-valid fixture via editor actions', () => {
+  it('matches fixture validation after placing two straights', () => {
+    const inventory = makeInventory({ 'straight-16': 5 });
+    let state = createEditorState(inventory);
+
+    state = editorReducer(state, { type: 'PLACE', x: 0, y: 0 });
+    state = editorReducer(state, { type: 'PLACE', x: 17, y: 0 });
+
+    const result = validateLayout(state.layout, CATALOGUE_V1);
+    expect(result.valid).toBe(true);
+    expect(state.layout.placements).toHaveLength(2);
+    expect(state.layout.placements[1]?.x).toBe(16);
   });
 });
