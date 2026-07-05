@@ -13,6 +13,16 @@ const inventoryFixture = {
   updatedAt: '2026-07-05T00:00:00.000Z',
 };
 
+/** Matches default editor viewport from createEditorState. */
+const DEFAULT_VIEWPORT = { panX: 48, panY: 48, zoom: 6 };
+
+function studToCanvasOffset(studX: number, studY: number) {
+  return {
+    x: DEFAULT_VIEWPORT.panX + studX * DEFAULT_VIEWPORT.zoom,
+    y: DEFAULT_VIEWPORT.panY + studY * DEFAULT_VIEWPORT.zoom,
+  };
+}
+
 test('editor places a straight piece and decrements inventory badge', async ({ page }) => {
   await page.addInitScript(
     ({ key, value }) => {
@@ -23,6 +33,8 @@ test('editor places a straight piece and decrements inventory badge', async ({ p
 
   await page.goto('editor/');
   await page.waitForLoadState('networkidle');
+  await page.waitForSelector('[data-testid="editor-canvas"]');
+  await page.waitForTimeout(500);
 
   const straightBadge = page.getByTestId('palette-straight-16').locator('.badge');
   await expect(straightBadge).toHaveText('3');
@@ -32,13 +44,8 @@ test('editor places a straight piece and decrements inventory badge', async ({ p
   const canvas = page.getByTestId('editor-canvas');
   await expect(canvas).toBeVisible();
 
-  const box = await canvas.boundingBox();
-  if (!box) {
-    throw new Error('Canvas bounding box not found');
-  }
-
-  // Click near canvas centre (world origin area with default pan/zoom)
-  await page.mouse.click(box.x + box.width * 0.45, box.y + box.height * 0.45);
+  const { x, y } = studToCanvasOffset(0, 0);
+  await canvas.click({ position: { x, y } });
 
   await expect(straightBadge).toHaveText('2');
 });

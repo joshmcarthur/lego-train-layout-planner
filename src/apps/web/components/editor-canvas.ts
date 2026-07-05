@@ -1,7 +1,7 @@
 import type { Layout, Placement, ValidationIssue } from '@track-layout/connection-engine';
 import { getWorldPorts, validateLayout } from '@track-layout/connection-engine';
 import { CATALOGUE_V1 } from '@track-layout/piece-catalogue';
-import { LitElement, css, nothing, svg } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import type { Viewport } from '../state/editor-reducer.ts';
@@ -242,8 +242,8 @@ export class EditorCanvas extends LitElement {
             composed: true,
           }),
         );
+        return;
       }
-      return;
     }
 
     this.dispatchPointer('place', stud.x, stud.y);
@@ -336,7 +336,7 @@ export class EditorCanvas extends LitElement {
     const worldTransform = `translate(${panX} ${panY}) scale(${zoom})`;
     const openEnds = this.getOpenEndMarkers();
 
-    return svg`
+    return html`
       <svg
         data-testid="editor-canvas"
         @mousemove=${this.handleMouseMove}
