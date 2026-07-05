@@ -1,7 +1,7 @@
-import { loadInventory } from '@track-layout/persistence';
 import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
+import { bootstrapEditor } from '../state/bootstrap.ts';
 import { getState, initAppStore } from '../state/app-store.ts';
 import './layout-editor.ts';
 
@@ -17,7 +17,7 @@ export class EditorGate extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    initAppStore(loadInventory);
+    initAppStore(bootstrapEditor());
 
     const { inventory } = getState();
     if (!inventory) {

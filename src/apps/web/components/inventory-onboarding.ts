@@ -3,7 +3,7 @@ import { CATALOGUE_V1 } from '@track-layout/piece-catalogue';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
-import { initAppStore, setInventory } from '../state/app-store.ts';
+import { initAppStoreFromInventory, setInventory } from '../state/app-store.ts';
 import './inventory-form.ts';
 
 @customElement('inventory-onboarding')
@@ -40,7 +40,7 @@ export class InventoryOnboarding extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    initAppStore(() => null);
+    initAppStoreFromInventory(() => null);
   }
 
   private handleChange(event: CustomEvent<{ counts: Record<string, number> }>): void {
