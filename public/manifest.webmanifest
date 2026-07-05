@@ -1,0 +1,30 @@
+{
+  "name": "Lego Train Layout Planner",
+  "short_name": "Train Layout",
+  "description": "Plan Lego train track layouts in your browser.",
+  "start_url": "/lego-train-layout-planner/",
+  "scope": "/lego-train-layout-planner/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#1565c0",
+  "icons": [
+    {
+      "src": "/lego-train-layout-planner/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/lego-train-layout-planner/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/lego-train-layout-planner/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
