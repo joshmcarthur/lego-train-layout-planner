@@ -1,4 +1,5 @@
 /// <reference types="astro/client" />
+/// <reference types="vite-plugin-pwa/client" />
 
 declare module '*?worker' {
   const WorkerConstructor: {
