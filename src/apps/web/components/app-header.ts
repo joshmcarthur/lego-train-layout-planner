@@ -1,5 +1,5 @@
 import { LitElement, css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 
 import { loadInventory } from '@track-layout/persistence';
 import './inventory-settings.ts';
@@ -8,8 +8,11 @@ export type AppRoute = 'home' | 'onboarding' | 'editor' | 'generate';
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-  @property({ type: String })
-  route: AppRoute = 'home';
+  @state()
+  private route: AppRoute = 'home';
+
+  @state()
+  private hasInventory = false;
 
   static override styles = css`
     :host {
@@ -71,6 +74,32 @@ export class AppHeader extends LitElement {
     }
   `;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.route = this.detectRoute();
+    this.syncInventory();
+  }
+
+  private detectRoute(): AppRoute {
+    const path = window.location.pathname;
+    const base = import.meta.env.BASE_URL;
+
+    if (path.includes(`${base}editor`)) {
+      return 'editor';
+    }
+    if (path.includes(`${base}generate`)) {
+      return 'generate';
+    }
+    if (path.includes(`${base}onboarding`)) {
+      return 'onboarding';
+    }
+    return 'home';
+  }
+
+  private syncInventory(): void {
+    this.hasInventory = loadInventory() !== null;
+  }
+
   private base(): string {
     return import.meta.env.BASE_URL;
   }
@@ -81,24 +110,23 @@ export class AppHeader extends LitElement {
 
   override render() {
     const base = this.base();
-    const hasInventory = loadInventory() !== null;
 
     return html`
       <nav aria-label="Main">
         <a class="brand" href="${base}">Lego Train Layout Planner</a>
         <div class="links">
           ${this.navLink(`${base}`, 'Home', this.route === 'home')}
-          ${hasInventory
+          ${this.hasInventory
             ? this.navLink(`${base}editor/`, 'Editor', this.route === 'editor')
             : nothing}
-          ${hasInventory
+          ${this.hasInventory
             ? this.navLink(`${base}generate/`, 'Generate', this.route === 'generate')
             : nothing}
-          ${!hasInventory
+          ${!this.hasInventory
             ? this.navLink(`${base}onboarding/`, 'Set up inventory', this.route === 'onboarding')
             : nothing}
         </div>
-        ${hasInventory && this.route !== 'onboarding'
+        ${this.hasInventory && this.route !== 'onboarding'
           ? html`<div class="actions"><inventory-settings></inventory-settings></div>`
           : null}
       </nav>

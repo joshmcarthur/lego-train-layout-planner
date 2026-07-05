@@ -1,18 +1,14 @@
 import { expect, test } from '@playwright/test';
 
-test('home page shows app title', async ({ page }) => {
+test('home page redirects to onboarding on first visit', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
   await page.goto('');
-  await expect(
-    page.getByRole('heading', { name: 'Lego Train Layout Planner' }),
-  ).toBeVisible();
+  await page.waitForURL(/onboarding\/$/);
+  await expect(page.getByRole('heading', { name: 'Your track inventory' })).toBeVisible();
 });
 
-test('lit smoke counter increments on click', async ({ page }) => {
-  await page.goto('');
-  await page.waitForLoadState('networkidle');
-  const incrementButton = page.getByRole('button', { name: 'Increment' });
-  await expect(incrementButton).toBeVisible();
-  await expect(page.getByText('Count: 0')).toBeVisible();
-  await incrementButton.click();
-  await expect(page.getByText('Count: 1')).toBeVisible();
+test('app header shows main navigation', async ({ page }) => {
+  await page.goto('onboarding/');
+  await expect(page.getByRole('navigation', { name: 'Main' })).toBeVisible();
 });

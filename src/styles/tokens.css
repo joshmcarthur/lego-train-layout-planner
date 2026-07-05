@@ -3,6 +3,13 @@
   --color-rail: #4a4a4a;
   --color-invalid: #c62828;
   --color-valid: #2e7d32;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 2.5rem;
+  --space-6: 3rem;
 }
 
 *,
@@ -27,12 +34,12 @@ body {
 main {
   max-width: 48rem;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: var(--space-4) var(--space-3);
 }
 
 main.editor-layout {
   max-width: none;
-  padding: 1.5rem;
+  padding: var(--space-3);
 }
 
 a {
