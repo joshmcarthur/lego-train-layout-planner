@@ -23,8 +23,8 @@ section calls for them.
 | 003 | Grid coordinate system | [02](../plans/02-domain-research-and-piece-catalogue.md) | Proposed |
 | 004 | Port and connection model | [02](../plans/02-domain-research-and-piece-catalogue.md) | Proposed |
 | 005 | Route graph semantics | [03](../plans/03-connection-engine.md) | Accepted |
-| 006 | Inventory storage schema | [04](../plans/04-inventory-and-onboarding.md) | Proposed |
-| 007 | Onboarding UX | [04](../plans/04-inventory-and-onboarding.md) | Proposed |
+| 006 | Inventory storage schema | [04](../plans/04-inventory-and-onboarding.md) | Accepted |
+| 007 | Onboarding UX | [04](../plans/04-inventory-and-onboarding.md) | Accepted |
 | 008 | Editor interaction model | [05](../plans/05-manual-layout-editor.md) | Proposed |
 | 009 | Canvas rendering approach | [05](../plans/05-manual-layout-editor.md) | Proposed |
 | 010 | Layout generation algorithm | [06](../plans/06-layout-generator.md) | Proposed |
