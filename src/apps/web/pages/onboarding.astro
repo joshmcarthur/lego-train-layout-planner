@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { InventoryOnboarding } from '../components/inventory-onboarding';
+import { ShareRedirectGate } from '../components/share-redirect-gate';
 ---
 
-<BaseLayout title="Onboarding — Lego Train Layout Planner">
+<BaseLayout title="Onboarding — Lego Train Layout Planner" route="onboarding">
+  <ShareRedirectGate client:only="lit" />
   <main>
     <InventoryOnboarding client:only="lit" />
   </main>

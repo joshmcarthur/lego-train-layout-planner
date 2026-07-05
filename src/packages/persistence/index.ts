@@ -13,6 +13,7 @@ export {
   LAYOUTS_INDEX_KEY,
   clearAutosave,
   deleteLayout,
+  hasAutosaveSession,
   layoutBlobKey,
   listLayouts,
   loadAutosave,

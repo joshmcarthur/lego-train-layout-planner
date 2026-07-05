@@ -1,19 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { LitSmokeCounter } from '../components/lit-smoke-counter';
+import { LandingGate } from '../components/landing-gate';
 ---
 
-<BaseLayout title="Lego Train Layout Planner">
+<BaseLayout title="Lego Train Layout Planner" route="home">
   <main>
-    <h1>Lego Train Layout Planner</h1>
-    <p>Enter your track inventory to start planning layouts.</p>
-    <LitSmokeCounter client:load />
-    <p>
-      <a href={`${import.meta.env.BASE_URL}onboarding/`}>Set up inventory</a>
-      ·
-      <a href={`${import.meta.env.BASE_URL}generate/`}>Generate layouts</a>
-      ·
-      <a href={`${import.meta.env.BASE_URL}editor/`}>Open editor</a>
-    </p>
+    <LandingGate client:only="lit" />
   </main>
 </BaseLayout>

@@ -160,6 +160,11 @@ export function loadAutosave(): SerializedAppState | null {
   }
 }
 
+export function hasAutosaveSession(): boolean {
+  const autosave = loadAutosave();
+  return (autosave?.layout.placements.length ?? 0) > 0;
+}
+
 export function clearAutosave(): void {
   const storage = getLocalStorage();
   storage?.removeItem(AUTOSAVE_KEY);
