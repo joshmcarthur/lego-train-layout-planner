@@ -4,7 +4,8 @@ import { CATALOGUE_V1 } from '@track-layout/piece-catalogue';
 import { LitElement, css, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
-import { getState, setLayout, subscribe } from '../state/app-store.ts';
+import { getInventoryShortfall } from './fork-banner.ts';
+import { getState, getSessionEpoch, setLayout, subscribe } from '../state/app-store.ts';
 import {
   createEditorState,
   editorReducer,
@@ -13,8 +14,13 @@ import {
 } from '../state/editor-reducer.ts';
 import './editor-canvas.ts';
 import './editor-toolbar.ts';
+import './fork-banner.ts';
+import './import-export-menu.ts';
 import './inventory-palette.ts';
 import './inventory-settings.ts';
+import './layout-library.ts';
+import './save-load-menu.ts';
+import './share-link-button.ts';
 
 @customElement('layout-editor')
 export class LayoutEditor extends LitElement {
@@ -31,6 +37,7 @@ export class LayoutEditor extends LitElement {
   private spaceHeld = false;
 
   private unsubscribe: (() => void) | null = null;
+  private sessionEpoch = 0;
 
   static override styles = css`
     :host {
@@ -48,9 +55,16 @@ export class LayoutEditor extends LitElement {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 1rem;
       margin-bottom: 1rem;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: flex-start;
     }
 
     h1 {
@@ -83,27 +97,37 @@ export class LayoutEditor extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    const { inventory, layout } = getState();
-    if (!inventory) {
-      return;
-    }
-
-    this.editorState = createEditorState(inventory, layout);
-    this.syncRemaining();
+    this.syncFromStore();
 
     this.unsubscribe = subscribe(() => {
-      const current = getState();
-      if (current.inventory && this.editorState) {
-        this.editorState = {
-          ...this.editorState,
-          inventory: current.inventory,
-        };
-        this.syncRemaining();
-      }
+      this.syncFromStore();
     });
 
     window.addEventListener('keydown', this.handleWindowKeyDown);
     window.addEventListener('keyup', this.handleWindowKeyUp);
+  }
+
+  private syncFromStore(): void {
+    const current = getState();
+    if (!current.inventory) {
+      return;
+    }
+
+    const epoch = getSessionEpoch();
+    if (!this.editorState || epoch !== this.sessionEpoch) {
+      this.sessionEpoch = epoch;
+      this.editorState = createEditorState(current.inventory, current.layout);
+      this.syncRemaining();
+      return;
+    }
+
+    if (this.editorState.inventory !== current.inventory) {
+      this.editorState = {
+        ...this.editorState,
+        inventory: current.inventory,
+      };
+      this.syncRemaining();
+    }
   }
 
   override disconnectedCallback(): void {
@@ -285,12 +309,28 @@ export class LayoutEditor extends LitElement {
 
     const ghost = this.ghostPlacement;
     const layoutIssues = validateLayout(this.editorState.layout, CATALOGUE_V1);
+    const appState = getState();
+    const shortfalls = appState.inventory
+      ? getInventoryShortfall(appState.inventory, this.editorState.layout)
+      : [];
 
     return html`
       <div tabindex="0" @keydown=${this.handleKeyDown}>
+        <fork-banner
+          .forkMode=${appState.forkMode}
+          .catalogueMismatch=${appState.catalogueMismatch}
+          .shortfalls=${shortfalls}
+        ></fork-banner>
+
         <div class="header">
           <h1>Editor</h1>
-          <inventory-settings></inventory-settings>
+          <div class="header-actions">
+            <save-load-menu @layout-saved=${() => this.syncFromStore()}></save-load-menu>
+            <share-link-button></share-link-button>
+            <layout-library @layout-opened=${() => this.syncFromStore()}></layout-library>
+            <import-export-menu @layout-imported=${() => this.syncFromStore()}></import-export-menu>
+            <inventory-settings></inventory-settings>
+          </div>
         </div>
 
         <div class="toolbar-row">

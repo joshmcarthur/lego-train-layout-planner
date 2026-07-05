@@ -6,7 +6,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import {
   getState,
   hasLayoutInProgress,
-  initAppStore,
+  initAppStoreFromInventory,
   setInventory,
   subscribe,
 } from '../state/app-store.ts';
@@ -89,7 +89,7 @@ export class InventorySettings extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    initAppStore(loadInventory);
+    initAppStoreFromInventory(loadInventory);
     this.syncFromStore();
     this.unsubscribe = subscribe(() => {
       this.syncFromStore();
