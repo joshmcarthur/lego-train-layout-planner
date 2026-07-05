@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import '../components/lit-smoke-counter';
 ---
 
 <BaseLayout title="Lego Train Layout Planner">
   <main>
     <h1>Lego Train Layout Planner</h1>
     <p>Planning…</p>
+    <lit-smoke-counter client:load></lit-smoke-counter>
     <p><a href={`${import.meta.env.BASE_URL}editor`}>Open editor (stub)</a></p>
   </main>
 </BaseLayout>
