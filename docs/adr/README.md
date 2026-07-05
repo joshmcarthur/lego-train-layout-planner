@@ -31,6 +31,6 @@ section calls for them.
 | 011 | Generator UX | [06](../plans/06-layout-generator.md) | Accepted |
 | 012 | Serialization format | [07](../plans/07-persistence-sharing-and-layout-lifecycle.md) | Accepted |
 | 013 | Saved layouts index | [07](../plans/07-persistence-sharing-and-layout-lifecycle.md) | Accepted |
-| 014 | PWA offline strategy | [08](../plans/08-app-shell-pwa-and-accessibility.md) | Proposed |
-| 015 | Mobile editor posture | [08](../plans/08-app-shell-pwa-and-accessibility.md) | Proposed |
+| 014 | PWA offline strategy | [08](../plans/08-app-shell-pwa-and-accessibility.md) | Accepted |
+| 015 | Mobile editor posture | [08](../plans/08-app-shell-pwa-and-accessibility.md) | Accepted |
 | 016 | Photo import phasing | [09](../plans/09-photo-import-feasibility.md) | Proposed |

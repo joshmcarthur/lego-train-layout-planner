@@ -14,8 +14,10 @@ shell after going offline. There is no backend API to cache.
 
 ### Tooling
 
-Use `@vite-pwa/astro` integrated with the Astro 7 build. The service worker is
-generated at build time via Workbox.
+Use `vite-plugin-pwa` in the Astro/Vite build (`vite.plugins` in
+`astro.config.mjs`). `@vite-pwa/astro` was not used because its peer range
+does not yet include Astro 7. The service worker is generated at build time
+via Workbox.
 
 ### Service worker scope
 
